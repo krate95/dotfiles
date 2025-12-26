@@ -77,7 +77,6 @@ plugins=(
     docker
     docker-compose
     git
-    kitty
     kubectl
     macos
     nvm
@@ -131,6 +130,8 @@ if [ -f ~/.alias ]; then
 fi
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+source "$ZSH_CUSTOM/aliases.zsh"
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
