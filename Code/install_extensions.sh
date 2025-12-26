@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-EXT_FILE="$HOME/dotfiles/vscode/extensions"
+EXT_FILE="$HOME/dotfiles/Code/extensions"
 
 if ! command -v code >/dev/null 2>&1; then
   echo "Missing VS Code"
