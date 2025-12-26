@@ -1,0 +1,92 @@
+{
+    "workbench.editor.mouseBackForwardToNavigate": true,
+    "workbench.iconTheme": "catppuccin-mocha",
+    "workbench.colorTheme": "One Dark Pro Darker",
+    "git.confirmSync": false,
+    "git.autofetch": true,
+    "terminal.integrated.fontSize": 17,
+    "[python]": {
+        "editor.defaultFormatter": null,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 4,
+        "editor.formatOnSave": true
+    },
+    "eslint.format.enable": true,
+    "eslint.useFlatConfig": true,
+    "[javascript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features",
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+        },
+        "editor.formatOnSave": false
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features",
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+        },
+        "editor.formatOnSave": false
+    },
+    "editor.tabSize": 4,
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "prettier.configPath": ".prettierrc",
+    "[nginx]": {
+        "editor.defaultFormatter": "ahmadalli.vscode-nginx-conf"
+    },
+    "eslint.workingDirectories": [
+        {
+            "mode": "auto"
+        }
+    ],
+    "explorer.confirmDelete": false,
+    "[html][typescript]": {
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+        }
+    },
+    "remote.autoForwardPortsSource": "hybrid",
+    "window.zoomLevel": 1,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.formatOnSave": true,
+    "editor.indentSize": "tabSize",
+    "notebook.codeActionsOnSave": {},
+    "eslint.codeActionsOnSave.rules": null,
+    "terminal.integrated.defaultProfile.linux": "zsh",
+    "vscode-system-monitor.configuration.monitor.cpu.enabled": true,
+    "vscode-system-monitor.configuration.monitor.network.enabled": true,
+    "vscode-system-monitor.configuration.monitor.memory.enabled": true,
+    "git.terminalAuthentication": false,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "workbench.activityBar.location": "top",
+    "window.customTitleBarVisibility": "auto",
+    "workbench.sideBar.location": "right",
+    "editor.fontFamily": "CaskaydiaCove Nerd Font",
+    "editor.fontLigatures": true,
+    "terminal.integrated.fontFamily": "CaskaydiaCove Nerd Font Mono",
+    "editor.fontSize": 20,
+    "editor.wordWrap": "on",
+    "python.analysis.typeCheckingMode": "basic",
+    "[dockercompose]": {
+        "editor.defaultFormatter": "ms-azuretools.vscode-containers"
+    },
+    "containers.containerClient": "com.microsoft.visualstudio.containers.docker",
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "[handlebars]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[yaml]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "[github-actions-workflow]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+}
