@@ -89,4 +89,7 @@
     "[github-actions-workflow]": {
         "editor.defaultFormatter": "redhat.vscode-yaml"
     },
+    "debug.javascript.defaultRuntimeExecutable": {
+        "pwa-node": "/Users/krate/.nvm/versions/node/v22.17.1/bin/node"
+    },
 }
