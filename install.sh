@@ -79,7 +79,7 @@ install_vscode() {
 				local tmpdir
 				tmpdir="$(mktemp -d)"
 				local url
-				url="https://go.microsoft.com/fwlink/?LinkID=534106"
+				url="https://code.visualstudio.com/sha/download?build=stable&os=darwin-arm64"
 				local archive
 				archive="$tmpdir/vscode.zip"
 				log "Downloading VS Code..."
