@@ -120,7 +120,7 @@ if [[ -n $SSH_CONNECTION ]]; then
 
 export SSH_AUTH_SOCK=~/.bitwarden-ssh-agent.sock
 
-eval "$(oh-my-posh init zsh --config ~/.cache/oh-my-posh/themes/catppuccin.omp.json)"
+eval "$(oh-my-posh init zsh --config 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/catppuccin.omp.json')"
 
 if [ -f ~/mnemo/.alias ]; then
     source ~/mnemo/.alias
