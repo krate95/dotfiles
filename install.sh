@@ -205,6 +205,34 @@ install_oh_my_posh() {
     esac
 }
 
+install_cascadia_code_nerd_font() {
+    case "$OS" in
+        macos)
+            brew tap homebrew/cask-fonts
+            brew install --cask font-caskaydia-cove-nerd-font || true
+            ;;
+        arch)
+            sudo pacman -Sy --noconfirm ttf-cascadia-code-nerd || true
+            ;;
+        ubuntu)
+            local tmpdir
+            tmpdir="$(mktemp -d)"
+            local url
+            url="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/CascadiaCode.zip"
+            local archive
+            archive="$tmpdir/CascadiaCode.zip"
+            log "Downloading Cascadia Code Nerd Font..."
+            curl -fL "$url" -o "$archive"
+            local font_dir="$HOME/.local/share/fonts"
+            mkdir -p "$font_dir"
+            log "Extracting Cascadia Code Nerd Font to $font_dir..."
+            unzip -q "$archive" -d "$font_dir"
+            fc-cache -fv
+            rm -rf "$tmpdir"
+            ;;
+    esac
+}
+
 apply_stow() {
 	if ! command -v stow >/dev/null 2>&1; then
 		err "stow is not installed. Run the script with privileges or install it first."
@@ -255,6 +283,12 @@ main() {
 	else
 		log "Skipped kitty"
 	fi
+
+    if confirm "Install Cascadia Code Nerd Font?"; then
+        install_cascadia_code_nerd_font
+    else
+        log "Skipped Cascadia Code Nerd Font"
+    fi
 
 	if confirm "Install zsh, Oh My Zsh, and plugins?"; then
 		install_zsh_and_oh_my_zsh
