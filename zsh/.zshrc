@@ -118,9 +118,9 @@ if [[ -n $SSH_CONNECTION ]]; then
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export SSH_AUTH_SOCK=/home/krate/.bitwarden-ssh-agent.sock
+export SSH_AUTH_SOCK=~/.bitwarden-ssh-agent.sock
 
-eval "$(oh-my-posh init zsh --config /home/krate/.cache/oh-my-posh/themes/catppuccin.omp.json)"
+eval "$(oh-my-posh init zsh --config ~/.cache/oh-my-posh/themes/catppuccin.omp.json)"
 
 if [ -f ~/mnemo/.alias ]; then
     source ~/mnemo/.alias
@@ -134,6 +134,6 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
-[[ -f /home/krate/.dart-cli-completion/zsh-config.zsh ]] && . /home/krate/.dart-cli-completion/zsh-config.zsh || true
+[[ -f ~/.dart-cli-completion/zsh-config.zsh ]] && . ~/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 
