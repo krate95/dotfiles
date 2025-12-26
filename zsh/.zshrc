@@ -83,7 +83,6 @@ plugins=(
     nvm
     rsync
     ssh
-    zsh-256color
     zsh-syntax-highlighting
 )
 
