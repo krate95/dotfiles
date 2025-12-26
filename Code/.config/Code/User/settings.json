@@ -60,9 +60,6 @@
     "notebook.codeActionsOnSave": {},
     "eslint.codeActionsOnSave.rules": null,
     "terminal.integrated.defaultProfile.linux": "zsh",
-    "vscode-system-monitor.configuration.monitor.cpu.enabled": true,
-    "vscode-system-monitor.configuration.monitor.network.enabled": true,
-    "vscode-system-monitor.configuration.monitor.memory.enabled": true,
     "git.terminalAuthentication": false,
     "editor.unicodeHighlight.invisibleCharacters": false,
     "editor.unicodeHighlight.ambiguousCharacters": false,
@@ -89,4 +86,8 @@
     "[github-actions-workflow]": {
         "editor.defaultFormatter": "redhat.vscode-yaml"
     },
+    "resmon.show.battery": false,
+    "resmon.show.cpufreq": false,
+    "resmon.disk.format": "PercentUsed",
+    "resmon.updatefrequencyms": 5000,
 }
