@@ -83,6 +83,7 @@ plugins=(
     nvm
     rsync
     ssh
+    zsh-autosuggestions
     zsh-syntax-highlighting
 )
 
