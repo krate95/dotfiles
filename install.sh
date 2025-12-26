@@ -208,7 +208,6 @@ install_oh_my_posh() {
 install_cascadia_code_nerd_font() {
     case "$OS" in
         macos)
-            brew tap homebrew/cask-fonts
             brew install --cask font-caskaydia-cove-nerd-font || true
             ;;
         arch)
