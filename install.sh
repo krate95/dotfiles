@@ -191,6 +191,20 @@ install_zsh_and_oh_my_zsh() {
     fi
 }
 
+install_oh_my_posh() {
+    case "$OS" in
+        macos)
+            brew install jandedobbeleer/oh-my-posh/oh-my-posh || true
+            ;;
+        ubuntu)
+            curl -s https://ohmyposh.dev/install.sh | bash -s
+            ;;
+        arch)
+            curl -s https://ohmyposh.dev/install.sh | bash -s
+            ;;
+    esac
+}
+
 apply_stow() {
 	if ! command -v stow >/dev/null 2>&1; then
 		err "stow is not installed. Run the script with privileges or install it first."
@@ -247,6 +261,12 @@ main() {
 	else
 		log "Skipped zsh/Oh My Zsh/plugins"
 	fi
+
+    if confirm "Install Oh My Posh?"; then
+        install_oh_my_posh
+    else
+        log "Skipped Oh My Posh"
+    fi
 
 	if confirm "Run stow to symlink dotfiles now?"; then
 		apply_stow
