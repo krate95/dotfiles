@@ -1,3 +1,8 @@
+# Homebrew path (macOS)
+if [ -d /opt/homebrew/bin ]; then
+  export PATH="/opt/homebrew/bin:$PATH"
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
@@ -119,8 +124,6 @@ if [[ -n $SSH_CONNECTION ]]; then
 
 export SSH_AUTH_SOCK=~/.bitwarden-ssh-agent.sock
 
-eval "$(oh-my-posh init zsh --config 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/catppuccin.omp.json')"
-
 if [ -f ~/mnemo/.alias ]; then
     source ~/mnemo/.alias
 fi
@@ -132,6 +135,8 @@ fi
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 source "$ZSH_CUSTOM/aliases.zsh"
+
+eval "$(oh-my-posh init zsh --config 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/catppuccin.omp.json')"
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
