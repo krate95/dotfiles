@@ -232,6 +232,20 @@ install_cascadia_code_nerd_font() {
     esac
 }
 
+install_nvim() {
+	case "$OS" in
+		macos)
+			brew install neovim ripgrep || true
+			;;
+		ubuntu)
+			sudo apt-get install -y neovim ripgrep || true
+			;;
+		arch)
+			sudo pacman -Sy --noconfirm neovim ripgrep || true
+			;;
+	esac
+}
+
 apply_stow() {
 	if ! command -v stow >/dev/null 2>&1; then
 		err "stow is not installed. Run the script with privileges or install it first."
@@ -300,6 +314,12 @@ main() {
     else
         log "Skipped Oh My Posh"
     fi
+
+	if confirm "Install Neovim?"; then
+		install_nvim
+	else
+		log "Skipped Neovim"
+	fi
 
 	if confirm "Run stow to symlink dotfiles now?"; then
 		apply_stow
