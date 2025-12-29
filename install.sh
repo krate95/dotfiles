@@ -256,7 +256,7 @@ apply_stow() {
 	for d in */; do
 		pkg="${d%/}"
 		# Ignore folders that are not dotfile packages
-		if [[ "$pkg" == ".git" || "$pkg" == "install.sh" ]]; then
+		if [[ "$pkg" == ".git" || "$pkg" == "install.sh" || "$pkg" == "kde-layouts" ]]; then
 			continue
 		fi
 		log "Stowing $pkg -> $HOME"
