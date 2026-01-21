@@ -424,8 +424,8 @@ If you need help, please feel welcome to ask in the GitHub discussions.
   _ _ _ _ _ _ _ _ _ _ _ _ _ _
   _ _ up _ _ _ _ _ _ _ _ _ _ _
   _ left down right _ _ _ _ _ _ _ _ _
-  _ _ _ _ _ _ _ _ _ _ _
-  _ _ _ _ _
+  _ _ _ _ _ _ _ _ _ _ _ _
+  _ _ _ _ _ _ _
 )
 
 ;; The dvorak layer remaps the keys to the dvorak layout. There are several
