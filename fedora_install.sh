@@ -161,7 +161,7 @@ main() {
   # Host essentials (kitty INCLUDED here)
   if confirm "Install host essentials (git, stow, toolbox, kitty, curl, unzip, jq, ripgrep)?"; then
     set +e
-    stage_host_pkgs git stow toolbox kitty curl unzip jq ripgrep zsh
+    stage_host_pkgs git stow toolbox kitty curl unzip jq ripgrep zsh fprintd
     rc=$?
     set -e
     if [[ "$rc" == "10" ]]; then
