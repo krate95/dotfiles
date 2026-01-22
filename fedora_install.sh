@@ -162,6 +162,31 @@ install_oh_my_posh() {
 }
 
 # -------------------------
+# Fonts
+# -------------------------
+install_fonts() {
+  local font_dir="$HOME/.local/share/fonts"
+  local tmpdir
+  tmpdir="$(mktemp -d)"
+
+  log "Installing Cascadia Code Nerd Font (user-local)"
+
+  mkdir -p "$font_dir"
+
+  curl -fsSL \
+    https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/CascadiaCode.zip \
+    -o "$tmpdir/CascadiaCode.zip"
+
+  unzip -qo "$tmpdir/CascadiaCode.zip" -d "$font_dir"
+
+  fc-cache -fv "$font_dir"
+
+  rm -rf "$tmpdir"
+
+  log "Cascadia Code Nerd Font installed"
+}
+
+# -------------------------
 # VS Code extensions
 # -------------------------
 install_vscode_extensions() {
@@ -230,6 +255,10 @@ main() {
       err "Host packages staged. Reboot now and re-run the script."
       exit 0
     fi
+  fi
+
+  if confirm "Install fonts?"; then
+    install_fonts
   fi
 
   if confirm "Install Oh My Zsh (user-only)?"; then
