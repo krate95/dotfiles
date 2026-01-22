@@ -129,6 +129,39 @@ install_oh_my_zsh() {
 }
 
 # -------------------------
+# Oh my posh
+# -------------------------
+install_oh_my_posh() {
+  local bin_dir="$HOME/.local/bin"
+  local omp_bin="$bin_dir/oh-my-posh"
+
+  mkdir -p "$bin_dir"
+
+  if [[ -x "$omp_bin" ]]; then
+    log "Oh My Posh already installed at $omp_bin"
+    return 0
+  fi
+
+  log "Installing Oh My Posh to $bin_dir"
+  curl -fsSL https://ohmyposh.dev/install.sh | bash -s -- -d "$bin_dir"
+
+  if [[ ! -x "$omp_bin" ]]; then
+    err "Oh My Posh installation failed (missing $omp_bin)"
+    return 1
+  fi
+
+  # Ensure ~/.local/bin is in PATH for future shells
+  local zprofile="$HOME/.zprofile"
+  local path_line='export PATH="$HOME/.local/bin:$PATH"'
+  if [[ -f "$zprofile" ]] && grep -Fqx "$path_line" "$zprofile"; then
+    log "~/.local/bin already in PATH via ~/.zprofile"
+  else
+    log "Adding ~/.local/bin to PATH in ~/.zprofile"
+    printf '\n# User binaries\n%s\n' "$path_line" >> "$zprofile"
+  fi
+}
+
+# -------------------------
 # VS Code extensions
 # -------------------------
 install_vscode_extensions() {
@@ -201,6 +234,10 @@ main() {
 
   if confirm "Install Oh My Zsh (user-only)?"; then
     install_oh_my_zsh
+  fi
+
+  if confirm "Install Oh My Posh (user-only, ~/.local/bin)?"; then
+    install_oh_my_posh || true
   fi
 
   if confirm "Install GUI apps via Flatpak (Bitwarden, Firefox, Vivaldi, VS Code)?"; then
