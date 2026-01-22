@@ -100,6 +100,35 @@ toolbox_dnf_install() {
 }
 
 # -------------------------
+# Oh my zsh
+# -------------------------
+install_oh_my_zsh() {
+  if [[ -d "$HOME/.oh-my-zsh" ]]; then
+    log "Oh My Zsh already installed"
+    return 0
+  fi
+
+  log "Installing Oh My Zsh"
+  RUNZSH=no CHSH=no sh -c \
+    "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+  ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+  mkdir -p "$ZSH_CUSTOM/plugins"
+
+  if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]]; then
+    log "Installing zsh-autosuggestions"
+    git clone https://github.com/zsh-users/zsh-autosuggestions \
+      "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+  fi
+
+  if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]]; then
+    log "Installing zsh-syntax-highlighting"
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting \
+      "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+  fi
+}
+
+# -------------------------
 # VS Code extensions
 # -------------------------
 install_vscode_extensions() {
@@ -168,6 +197,10 @@ main() {
       err "Host packages staged. Reboot now and re-run the script."
       exit 0
     fi
+  fi
+
+  if confirm "Install Oh My Zsh (user-only)?"; then
+    install_oh_my_zsh
   fi
 
   if confirm "Install GUI apps via Flatpak (Bitwarden, Firefox, Vivaldi, VS Code)?"; then
