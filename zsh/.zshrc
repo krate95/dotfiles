@@ -136,6 +136,11 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 source "$ZSH_CUSTOM/aliases.zsh"
 
+# Add ~/.local/bin only on Linux
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  export PATH="$PATH:$HOME/.local/bin"
+fi
+
 eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/config.omp.json)"
 
 ## [Completion]
