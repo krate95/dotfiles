@@ -1,0 +1,154 @@
+@import "mocha.css";
+
+* {
+    font-family: "JetBrains Mono Nerd Font", "Font Awesome 6 Free", sans-serif;
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: transparent;
+}
+
+window#waybar > box {
+    background: alpha(@base, 0.85);
+    border: 1px solid @surface0;
+    border-radius: 12px;
+    padding: 2px 8px;
+}
+
+/* ---- Modules ---- */
+
+#workspaces,
+#window,
+#clock,
+#cpu,
+#memory,
+#battery,
+#network,
+#pulseaudio,
+#backlight,
+#tray {
+    /* padding: 2px 2px; */
+    /* margin: 2px 2px; */
+    border-radius: 8px;
+    background: transparent;
+    color: @text;
+}
+
+/* Workspaces */
+
+#workspaces button {
+    padding: 0 6px;
+    margin: 2px 1px;
+    border-radius: 6px;
+    color: @overlay0;
+    background: transparent;
+    border: none;
+}
+
+#workspaces button.active {
+    color: @base;
+    background: @mauve;
+}
+
+#workspaces button:hover {
+    color: @base;
+    background: @surface1;
+}
+
+/* Window title */
+
+#window {
+    color: @subtext1;
+    font-style: italic;
+}
+
+/* Clock */
+
+#clock {
+    color: @blue;
+    font-weight: bold;
+}
+
+/* CPU */
+
+#cpu {
+    color: @peach;
+}
+
+/* Memory */
+
+#memory {
+    color: @teal;
+}
+
+/* Battery */
+
+#battery {
+    color: @green;
+}
+
+#battery.charging {
+    color: @green;
+}
+
+#battery.warning:not(.charging) {
+    color: @yellow;
+}
+
+#battery.critical:not(.charging) {
+    color: @red;
+    animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+    to { color: @surface0; }
+}
+
+/* Network */
+
+#network {
+    color: @sapphire;
+}
+
+#network.disconnected {
+    color: @overlay0;
+}
+
+/* Audio */
+
+#pulseaudio {
+    color: @lavender;
+}
+
+#pulseaudio.muted {
+    color: @overlay0;
+}
+
+/* Backlight */
+
+#backlight {
+    color: @yellow;
+}
+
+/* Tray */
+
+#tray {
+    color: @text;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
+
+tooltip {
+    background: @base;
+    border: 1px solid @surface0;
+    border-radius: 8px;
+    color: @text;
+}
