@@ -93,8 +93,8 @@
         "on-click": "kitty -e nmtui"
     },
     "pulseaudio": {
-        "format": "{volume}% {icon}",
-        "format-muted": "󰝟 ",
+        "format": "{icon}",
+        "format-muted": " ",
         "format-icons": {
             "default": [
                 " ",
