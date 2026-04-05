@@ -94,7 +94,7 @@
     },
     "pulseaudio": {
         "format": "{volume}% {icon}",
-        "format-muted": "  Mute",
+        "format-muted": "󰝟 ",
         "format-icons": {
             "default": [
                 " ",

@@ -1,5 +1,7 @@
 @import "mocha.css";
 
+@define-color inactive @overlay0;
+
 * {
     font-family: "JetBrains Mono Nerd Font", "Font Awesome 6 Free", sans-serif;
     font-size: 13px;
@@ -125,7 +127,7 @@ window#waybar > box {
 }
 
 #pulseaudio.muted {
-    color: @overlay0;
+    color: @inactive;
 }
 
 /* Backlight */
@@ -175,7 +177,7 @@ window#waybar > box {
 }
 
 #custom-vpn.inactive {
-    color: @overlay0;
+    color: @inactive;
 }
 
 tooltip {
