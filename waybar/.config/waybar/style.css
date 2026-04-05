@@ -158,6 +158,16 @@ window#waybar > box {
     -gtk-icon-effect: highlight;
 }
 
+/* Power mode */
+
+#custom-power-mode.ac {
+    color: @yellow;
+}
+
+#custom-power-mode.bat {
+    color: @green;
+}
+
 /* VPN */
 
 #custom-vpn.active {

@@ -16,6 +16,7 @@
     "modules-right": [
         "tray",
         "custom/idle",
+        "custom/power-mode",
         "custom/vpn",
         "cpu",
         "memory",
@@ -125,6 +126,11 @@
         "exec": "ip link show wg0 &>/dev/null && echo '{\"text\":\"󰦝 \",\"class\":\"active\",\"tooltip\":\"VPN activa\"}' || echo '{\"text\":\"󰦝 \",\"class\":\"inactive\",\"tooltip\":\"VPN inactiva\"}'",
         "return-type": "json",
         "interval": 5
+    },
+    "custom/power-mode": {
+        "exec": "~/.config/waybar/scripts/power-mode.sh",
+        "return-type": "json",
+        "interval": 10
     },
     "custom/idle": {
         "exec": "systemctl --user is-active hypridle >/dev/null && echo '{\"text\":\"󰒲 \",\"class\":\"active\",\"tooltip\":\"Sleep activado\"}' || echo '{\"text\":\"󰛐 \",\"class\":\"inhibited\",\"tooltip\":\"Sleep inhibido\"}'",
