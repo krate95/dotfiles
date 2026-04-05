@@ -28,7 +28,9 @@ window#waybar > box {
 #network,
 #pulseaudio,
 #backlight,
-#tray {
+#tray,
+#custom-idle,
+#custom-vpn {
     /* padding: 2px 2px; */
     /* margin: 2px 2px; */
     border-radius: 8px;
@@ -132,6 +134,16 @@ window#waybar > box {
     color: @yellow;
 }
 
+/* Idle inhibitor */
+
+#custom-idle.active {
+    color: @overlay0;
+}
+
+#custom-idle.inhibited {
+    color: @yellow;
+}
+
 /* Tray */
 
 #tray {
@@ -144,6 +156,16 @@ window#waybar > box {
 
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
+}
+
+/* VPN */
+
+#custom-vpn.active {
+    color: @green;
+}
+
+#custom-vpn.inactive {
+    color: @overlay0;
 }
 
 tooltip {

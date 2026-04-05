@@ -4,8 +4,8 @@
     "height": 36,
     "spacing": 8,
     "margin-top": 4,
-    "margin-left": 8,
-    "margin-right": 8,
+    "margin-left": 5,
+    "margin-right": 5,
     "modules-left": [
         "hyprland/workspaces",
         "hyprland/window"
@@ -15,6 +15,8 @@
     ],
     "modules-right": [
         "tray",
+        "custom/idle",
+        "custom/vpn",
         "cpu",
         "memory",
         "network",
@@ -118,6 +120,17 @@
         ],
         "on-scroll-up": "brightnessctl set +5%",
         "on-scroll-down": "brightnessctl set 5%-"
+    },
+    "custom/vpn": {
+        "exec": "ip link show wg0 &>/dev/null && echo '{\"text\":\"󰦝 \",\"class\":\"active\",\"tooltip\":\"VPN activa\"}' || echo '{\"text\":\"󰦝 \",\"class\":\"inactive\",\"tooltip\":\"VPN inactiva\"}'",
+        "return-type": "json",
+        "interval": 5
+    },
+    "custom/idle": {
+        "exec": "systemctl --user is-active hypridle >/dev/null && echo '{\"text\":\"󰒲 \",\"class\":\"active\",\"tooltip\":\"Sleep activado\"}' || echo '{\"text\":\"󰛐 \",\"class\":\"inhibited\",\"tooltip\":\"Sleep inhibido\"}'",
+        "return-type": "json",
+        "interval": 5,
+        "on-click": "~/.config/hypr/scripts/toggle-idle.sh"
     },
     "tray": {
         "icon-size": 16,
