@@ -138,7 +138,7 @@ EOF
 			fi
 			;;
 		arch)
-			sudo pacman -Sy --noconfirm visual-studio-code-bin || true
+			yay -Sy --noconfirm visual-studio-code-bin || true
 			;;
 		*) err "Cannot install VS Code on $OS"; return 1 ;;
 	esac
@@ -232,6 +232,20 @@ install_cascadia_code_nerd_font() {
     esac
 }
 
+install_sddm_theme() {
+	local theme_src="$REPO_DIR/sddm-theme/catppuccin-mocha-lavender"
+	local theme_dst="/usr/share/sddm/themes/catppuccin-mocha-lavender"
+
+	if [[ ! -d "$theme_src" ]]; then
+		err "SDDM theme not found at $theme_src"
+		return 1
+	fi
+
+	log "Copying SDDM theme to $theme_dst"
+	sudo cp -r "$theme_src" "$theme_dst"
+	log "SDDM theme installed"
+}
+
 install_nvim() {
 	case "$OS" in
 		macos)
@@ -256,7 +270,7 @@ apply_stow() {
 	for d in */; do
 		pkg="${d%/}"
 		# Ignore folders that are not dotfile packages
-		if [[ "$pkg" == ".git" || "$pkg" == "install.sh" || "$pkg" == "kde-layouts" ]]; then
+		if [[ "$pkg" == ".git" || "$pkg" == "install.sh" || "$pkg" == "kde-layouts" || "$pkg" == "sddm-theme" ]]; then
 			continue
 		fi
 		log "Stowing $pkg -> $HOME"
@@ -314,6 +328,12 @@ main() {
     else
         log "Skipped Oh My Posh"
     fi
+
+	if confirm "Install SDDM theme (catppuccin-mocha-lavender)?"; then
+		install_sddm_theme
+	else
+		log "Skipped SDDM theme"
+	fi
 
 	if confirm "Install Neovim?"; then
 		install_nvim

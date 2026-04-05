@@ -1,0 +1,11 @@
+[SddmGreeterTheme]
+Name=Catppuccin Mocha Lavender
+Description=Minimal SDDM theme based on Catppuccin Mocha palette with Lavender accent, matching hyprlock style
+Type=sddm-theme
+Author=krate95
+Version=1.0
+License=MIT
+MainScript=Main.qml
+ConfigFile=theme.conf
+Theme-Id=catppuccin-mocha-lavender
+Theme-API=2.0
