@@ -90,4 +90,5 @@
     "resmon.show.cpufreq": false,
     "resmon.disk.format": "PercentUsed",
     "resmon.updatefrequencyms": 5000,
+    "claudeCode.preferredLocation": "panel",
 }
