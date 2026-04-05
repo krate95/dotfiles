@@ -7,10 +7,10 @@ action="$1"
 
 case "$action" in
     up)
-        brightnessctl -e4 -n2 set 5%+
+        brightnessctl -n2 set 5%+
         ;;
     down)
-        brightnessctl -e4 -n2 set 5%-
+        brightnessctl -n2 set 5%-
         ;;
 esac
 
