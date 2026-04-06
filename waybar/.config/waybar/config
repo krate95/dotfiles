@@ -22,7 +22,6 @@
         "memory",
         "network",
         "pulseaudio",
-        "backlight",
         "battery"
     ],
     "hyprland/workspaces": {
@@ -123,7 +122,7 @@
         "on-scroll-down": "~/.config/waybar/scripts/brightness.sh down"
     },
     "custom/vpn": {
-        "exec": "ip link show wg0 &>/dev/null && echo '{\"text\":\"󰦝 \",\"class\":\"active\",\"tooltip\":\"VPN activa\"}' || echo '{\"text\":\"󰦝 \",\"class\":\"inactive\",\"tooltip\":\"VPN inactiva\"}'",
+        "exec": "ip link show wg0 &>/dev/null && echo '{\"text\":\"󰦝 \",\"class\":\"active\",\"tooltip\":\"VPN active\"}' || echo '{\"text\":\"󰦝 \",\"class\":\"inactive\",\"tooltip\":\"VPN inactive\"}'",
         "return-type": "json",
         "interval": 5
     },
@@ -133,7 +132,7 @@
         "interval": 10
     },
     "custom/idle": {
-        "exec": "systemctl --user is-active hypridle >/dev/null && echo '{\"text\":\"󰒲 \",\"class\":\"active\",\"tooltip\":\"Sleep activado\"}' || echo '{\"text\":\"󰛐 \",\"class\":\"inhibited\",\"tooltip\":\"Sleep inhibido\"}'",
+        "exec": "systemctl --user is-active hypridle >/dev/null && echo '{\"text\":\"󰒲 \",\"class\":\"active\",\"tooltip\":\"Sleep enabled\"}' || echo '{\"text\":\"󰛐 \",\"class\":\"inhibited\",\"tooltip\":\"Sleep inhibited\"}'",
         "return-type": "json",
         "interval": 5,
         "on-click": "~/.config/hypr/scripts/toggle-idle.sh"

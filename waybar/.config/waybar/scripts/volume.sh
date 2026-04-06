@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Notification ID fijo para reemplazar la notificación anterior
+# Fixed notification ID to replace previous notification
 NOTIF_ID=9991
 
 action="$1"
@@ -20,16 +20,16 @@ case "$action" in
         ;;
 esac
 
-# Leer estado actual
+# Read current state
 MUTED=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -c MUTED)
 VOL=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{printf "%.0f", $2 * 100}')
 
 if [ "$MUTED" -gt 0 ]; then
     ICON="󰝟"
-    MSG="Silenciado"
+    MSG="Muted"
     dunstify -a "volume" -u low -r "$NOTIF_ID" \
         -h "int:value:$VOL" \
-        "$ICON  Volumen" "$MSG" &
+        "$ICON  Volume" "$MSG" &
 else
     if [ "$VOL" -ge 67 ]; then
         ICON="󰕾"
@@ -40,5 +40,5 @@ else
     fi
     dunstify -a "volume" -u low -r "$NOTIF_ID" \
         -h "int:value:$VOL" \
-        "$ICON  Volumen" "${VOL}%" &
+        "$ICON  Volume" "${VOL}%" &
 fi

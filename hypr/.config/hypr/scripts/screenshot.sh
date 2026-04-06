@@ -19,10 +19,10 @@ case "$mode" in
     grim "$filename"
     ;;
   *)
-    notify-send "Screenshot" "Modo no soportado: $mode"
+    notify-send "Screenshot" "Unsupported mode: $mode"
     exit 1
     ;;
 esac
 
 wl-copy < "$filename"
-notify-send "Screenshot guardado" "$(basename "$filename") copiado al portapapeles"
+notify-send "Screenshot saved" "$(basename "$filename") copied to clipboard"

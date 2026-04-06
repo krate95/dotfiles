@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Notification ID fijo para reemplazar la notificación anterior
+# Fixed notification ID to replace previous notification
 NOTIF_ID=9992
 
 action="$1"
@@ -14,7 +14,7 @@ case "$action" in
         ;;
 esac
 
-# Leer brillo actual
+# Read current brightness
 BRIGHTNESS=$(brightnessctl get)
 MAX=$(brightnessctl max)
 PCT=$(( BRIGHTNESS * 100 / MAX ))
@@ -29,4 +29,4 @@ fi
 
 dunstify -a "brightness" -u low -r "$NOTIF_ID" \
     -h "int:value:$PCT" \
-    "$ICON  Brillo" "${PCT}%"
+    "$ICON  Brightness" "${PCT}%"
