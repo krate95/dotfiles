@@ -232,7 +232,55 @@ install_cascadia_code_nerd_font() {
     esac
 }
 
+install_hypr_packages() {
+	if [[ "$OS" != "arch" ]]; then
+		err "Hyprland packages are only supported on Arch Linux"
+		return 1
+	fi
+
+	# Core Hyprland stack
+	sudo pacman -Sy --noconfirm \
+		hyprland hyprlock hypridle hyprpaper \
+		waybar \
+		dunst \
+		playerctl brightnessctl \
+		grim slurp \
+		wob \
+		sddm || true
+
+	# swayosd is in AUR
+	if command -v yay >/dev/null 2>&1; then
+		yay -Sy --noconfirm swayosd || true
+	else
+		log "yay not found, skipping swayosd (AUR package)"
+	fi
+}
+
+install_intel_undervolt() {
+	if [[ "$OS" != "arch" ]]; then
+		err "intel-undervolt is only supported on Arch Linux"
+		return 1
+	fi
+
+	if command -v yay >/dev/null 2>&1; then
+		yay -Sy --noconfirm intel-undervolt || true
+	else
+		log "yay not found, skipping intel-undervolt (AUR package)"
+	fi
+
+	local conf_src="$REPO_DIR/intel-undervolt.conf"
+	if [[ -f "$conf_src" ]]; then
+		log "Copying intel-undervolt.conf to /etc/intel-undervolt.conf"
+		sudo cp "$conf_src" /etc/intel-undervolt.conf
+	fi
+}
+
 install_sddm_theme() {
+	if [[ "$OS" != "arch" ]]; then
+		err "SDDM theme is only supported on Arch Linux"
+		return 1
+	fi
+
 	local theme_src="$REPO_DIR/sddm-theme/catppuccin-mocha-lavender"
 	local theme_dst="/usr/share/sddm/themes/catppuccin-mocha-lavender"
 
@@ -266,11 +314,19 @@ apply_stow() {
 		return 1
 	fi
 
+	# Packages only relevant on Arch Linux (Hyprland/Wayland stack)
+	local arch_only_pkgs="hypr swayosd wob waybar mako dunst wallpapers thinkfan tlp"
+
 	cd "$REPO_DIR"
 	for d in */; do
 		pkg="${d%/}"
-		# Ignore folders that are not dotfile packages
+		# Ignore non-dotfile folders
 		if [[ "$pkg" == ".git" || "$pkg" == "install.sh" || "$pkg" == "kde-layouts" || "$pkg" == "sddm-theme" ]]; then
+			continue
+		fi
+		# Skip Arch/Hypr-only packages on other systems
+		if [[ "$OS" != "arch" ]] && echo "$arch_only_pkgs" | grep -qw "$pkg"; then
+			log "Skipping $pkg (Arch/Hyprland-only)"
 			continue
 		fi
 		log "Stowing $pkg -> $HOME"
@@ -329,10 +385,24 @@ main() {
         log "Skipped Oh My Posh"
     fi
 
-	if confirm "Install SDDM theme (catppuccin-mocha-lavender)?"; then
-		install_sddm_theme
-	else
-		log "Skipped SDDM theme"
+	if [[ "$OS" == "arch" ]]; then
+		if confirm "Install Hyprland stack (hyprland, waybar, dunst, swayosd, playerctl, brightnessctl, hypridle, hyprlock, hyprpaper, grim, slurp, wob, sddm)?"; then
+			install_hypr_packages
+		else
+			log "Skipped Hyprland packages"
+		fi
+
+		if confirm "Install SDDM theme (catppuccin-mocha-lavender)?"; then
+			install_sddm_theme
+		else
+			log "Skipped SDDM theme"
+		fi
+
+		if confirm "Install intel-undervolt (AUR)?"; then
+			install_intel_undervolt
+		else
+			log "Skipped intel-undervolt"
+		fi
 	fi
 
 	if confirm "Install Neovim?"; then
