@@ -4,8 +4,8 @@
     follow = none
     width = 360
     height = (0, 200)
-    origin = bottom-center
-    offset = (0, 80)
+    origin = top-right
+    offset = (20, 20)
     scale = 0
     notification_limit = 5
 
@@ -91,12 +91,3 @@
     highlight = "#f38ba8"
     timeout = 0
 
-[volume]
-    appname = volume
-    frame_color = "#cba6f7"
-    highlight = "#cba6f7"
-
-[brightness]
-    appname = brightness
-    frame_color = "#f9e2af"
-    highlight = "#f9e2af"
