@@ -298,7 +298,29 @@ install_kanata() {
 		yay -Sy --noconfirm kanata || true
 	else
 		log "yay not found, skipping kanata (AUR package)"
+		return
 	fi
+
+	# uinput es necesario para que kanata cree dispositivos de entrada virtuales
+	echo "uinput" | sudo tee /etc/modules-load.d/uinput.conf > /dev/null
+	sudo modprobe uinput || true
+
+	# El usuario necesita pertenecer a estos grupos para leer /dev/input y /dev/uinput
+	sudo usermod -aG input,uinput "$USER"
+
+	# El servicio del paquete lee /etc/kanata/kanata.kbd por defecto.
+	# Lo redirigimos al config stowed en ~/.config/kanata/kanata.kbd
+	local cfg="$HOME/.config/kanata/kanata.kbd"
+	sudo mkdir -p /etc/systemd/system/kanata.service.d
+	sudo tee /etc/systemd/system/kanata.service.d/override.conf > /dev/null <<EOF
+[Service]
+ExecStart=
+ExecStart=/usr/bin/kanata --cfg ${cfg}
+EOF
+
+	sudo systemctl daemon-reload
+	sudo systemctl enable kanata || true
+	log "kanata habilitado. Reinicia sesión para que los cambios de grupo surtan efecto."
 }
 
 install_intel_undervolt() {
