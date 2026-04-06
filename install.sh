@@ -256,6 +256,51 @@ install_hypr_packages() {
 	fi
 }
 
+install_thinkfan() {
+	if [[ "$OS" != "arch" ]]; then
+		err "thinkfan is only supported on Arch Linux"
+		return 1
+	fi
+
+	sudo pacman -Sy --noconfirm thinkfan || true
+
+	local conf_src="$REPO_DIR/thinkfan/thinkfan.conf"
+	if [[ -f "$conf_src" ]]; then
+		log "Copying thinkfan.conf to /etc/thinkfan.conf"
+		sudo cp "$conf_src" /etc/thinkfan.conf
+		sudo systemctl enable thinkfan || true
+	fi
+}
+
+install_tlp() {
+	if [[ "$OS" != "arch" ]]; then
+		err "TLP is only supported on Arch Linux"
+		return 1
+	fi
+
+	sudo pacman -Sy --noconfirm tlp || true
+
+	local conf_src="$REPO_DIR/tlp/tlp.conf"
+	if [[ -f "$conf_src" ]]; then
+		log "Copying tlp.conf to /etc/tlp.conf"
+		sudo cp "$conf_src" /etc/tlp.conf
+		sudo systemctl enable tlp || true
+	fi
+}
+
+install_kanata() {
+	if [[ "$OS" != "arch" ]]; then
+		err "kanata is only supported on Arch Linux"
+		return 1
+	fi
+
+	if command -v yay >/dev/null 2>&1; then
+		yay -Sy --noconfirm kanata || true
+	else
+		log "yay not found, skipping kanata (AUR package)"
+	fi
+}
+
 install_intel_undervolt() {
 	if [[ "$OS" != "arch" ]]; then
 		err "intel-undervolt is only supported on Arch Linux"
@@ -315,18 +360,36 @@ apply_stow() {
 	fi
 
 	# Packages only relevant on Arch Linux (Hyprland/Wayland stack)
-	local arch_only_pkgs="hypr swayosd wob waybar mako dunst wallpapers thinkfan tlp"
+	local arch_only_pkgs="hypr swayosd wob waybar mako dunst wallpapers kanata"
+
+	# These configs belong in /etc/, not $HOME — handled by their own install functions
+	local etc_pkgs="thinkfan tlp"
 
 	cd "$REPO_DIR"
 	for d in */; do
 		pkg="${d%/}"
 		# Ignore non-dotfile folders
-		if [[ "$pkg" == ".git" || "$pkg" == "install.sh" || "$pkg" == "kde-layouts" || "$pkg" == "sddm-theme" ]]; then
+		if [[ "$pkg" == ".git" || "$pkg" == "kde-layouts" || "$pkg" == "sddm-theme" ]]; then
+			continue
+		fi
+		# Code-macos is macOS-only (Library/Application Support path)
+		if [[ "$pkg" == "Code-macos" && "$OS" != "macos" ]]; then
+			log "Skipping Code-macos (macOS-only)"
+			continue
+		fi
+		# Code (Linux .config path) is not needed on macOS
+		if [[ "$pkg" == "Code" && "$OS" == "macos" ]]; then
+			log "Skipping Code (use Code-macos on macOS)"
 			continue
 		fi
 		# Skip Arch/Hypr-only packages on other systems
 		if [[ "$OS" != "arch" ]] && echo "$arch_only_pkgs" | grep -qw "$pkg"; then
 			log "Skipping $pkg (Arch/Hyprland-only)"
+			continue
+		fi
+		# Skip /etc/ packages — they are copied by their install functions, not stowed
+		if echo "$etc_pkgs" | grep -qw "$pkg"; then
+			log "Skipping $pkg (managed via /etc/, not stow)"
 			continue
 		fi
 		log "Stowing $pkg -> $HOME"
@@ -402,6 +465,24 @@ main() {
 			install_intel_undervolt
 		else
 			log "Skipped intel-undervolt"
+		fi
+
+		if confirm "Install thinkfan (fan control)?"; then
+			install_thinkfan
+		else
+			log "Skipped thinkfan"
+		fi
+
+		if confirm "Install TLP (power management)?"; then
+			install_tlp
+		else
+			log "Skipped TLP"
+		fi
+
+		if confirm "Install kanata (keyboard remapper, AUR)?"; then
+			install_kanata
+		else
+			log "Skipped kanata"
 		fi
 	fi
 
