@@ -6,12 +6,15 @@ set -euo pipefail
 #
 # Each step is opt-in (interactive y/N prompt). Installs:
 #   - stow                      — dotfile symlink manager
-#   - VS Code + extensions      — editor; extensions read from Code/extensions
+#   - VS Code + extensions      — editor (Homebrew cask on macOS); extensions read from Code/extensions
 #   - kitty                     — terminal emulator (official installer)
 #   - Cascadia Code Nerd Font   — programming font
 #   - zsh + Oh My Zsh           — shell; plugins: zsh-autosuggestions, zsh-syntax-highlighting
 #   - Oh My Posh                — shell prompt theme engine
 #   - Neovim + ripgrep          — editor and fast search tool
+#   [macOS only]
+#   - macOS defaults             — system preferences via macos-defaults.sh (input, Finder,
+#                                  Dock, screenshots, Safari, quality-of-life tweaks)
 #   [Arch Linux only]
 #   - Hyprland stack            — hyprland, waybar, dunst, swayosd, playerctl, brightnessctl,
 #                                 hypridle, hyprlock, hyprpaper, grim, slurp, wob, sddm
@@ -89,62 +92,7 @@ install_stow() {
 install_vscode() {
 	case "$OS" in
 		macos)
-			# Per official docs: download archive and move Visual Studio Code.app to /Applications
-			if [[ -d "/Applications/Visual Studio Code.app" ]]; then
-				log "VS Code already installed at /Applications/Visual Studio Code.app"
-			else
-				local tmpdir
-				tmpdir="$(mktemp -d)"
-				local url
-				url="https://code.visualstudio.com/sha/download?build=stable&os=darwin-arm64"
-				local archive
-				archive="$tmpdir/vscode.zip"
-				log "Downloading VS Code..."
-				curl -fL "$url" -o "$archive"
-
-				log "Extracting VS Code archive..."
-				if command -v unzip >/dev/null 2>&1; then
-					unzip -q "$archive" -d "$tmpdir"
-				else
-					ditto -xk "$archive" "$tmpdir"
-				fi
-
-				if [[ ! -d "$tmpdir/Visual Studio Code.app" ]]; then
-					err "VS Code archive did not contain Visual Studio Code.app"
-					rm -rf "$tmpdir"
-					return 1
-				fi
-
-				log "Installing VS Code into /Applications..."
-				if [[ -w "/Applications" ]]; then
-					rm -rf "/Applications/Visual Studio Code.app" 2>/dev/null || true
-					mv "$tmpdir/Visual Studio Code.app" "/Applications/Visual Studio Code.app"
-				else
-					sudo rm -rf "/Applications/Visual Studio Code.app" 2>/dev/null || true
-					sudo mv "$tmpdir/Visual Studio Code.app" "/Applications/Visual Studio Code.app"
-				fi
-
-				rm -rf "$tmpdir"
-			fi
-
-			# Docs recommend using the Command Palette to install 'code' in PATH.
-			# For CLI automation, we can also add the documented PATH entry.
-			if ! command -v code >/dev/null 2>&1; then
-				if confirm "Add 'code' command to PATH via ~/.zprofile (documented manual method)?"; then
-					local profile="$HOME/.zprofile"
-					local code_path="/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-					if [[ -f "$profile" ]] && grep -Fq "$code_path" "$profile"; then
-						log "~/.zprofile already includes VS Code path; skipping"
-					else
-						cat << EOF >> "$profile"
-
-# Add Visual Studio Code (code)
-export PATH="\$PATH:$code_path"
-EOF
-						log "Added VS Code to PATH in ~/.zprofile (open a new terminal to take effect)"
-					fi
-				fi
-			fi
+			brew install --cask visual-studio-code || true
 			;;
 		ubuntu)
 			if ! command -v code >/dev/null 2>&1; then
@@ -211,7 +159,7 @@ install_zsh_and_oh_my_zsh() {
 install_oh_my_posh() {
     case "$OS" in
         macos)
-            brew install jandedobbeleer/oh-my-posh/oh-my-posh || true
+            brew install oh-my-posh || true
             ;;
         ubuntu)
             curl -s https://ohmyposh.dev/install.sh | bash -s
@@ -445,6 +393,22 @@ main() {
 		*) err "Unsupported system (not handled automatically): $OS"; exit 1 ;;
 	esac
 
+	# Ask for sudo upfront and keep it alive throughout the script
+	sudo -v
+	while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+	# Ensure Homebrew is in PATH (Apple Silicon: /opt/homebrew, Intel: /usr/local)
+	if [[ "$OS" == "macos" ]]; then
+		if [[ -x /opt/homebrew/bin/brew ]]; then
+			eval "$(/opt/homebrew/bin/brew shellenv)"
+		elif [[ -x /usr/local/bin/brew ]]; then
+			eval "$(/usr/local/bin/brew shellenv)"
+		else
+			log "Homebrew not found. Install it first: https://brew.sh"
+			exit 1
+		fi
+	fi
+
 	if confirm "Install stow?"; then
 		install_stow
 	else
@@ -486,6 +450,14 @@ main() {
     else
         log "Skipped Oh My Posh"
     fi
+
+	if [[ "$OS" == "macos" ]]; then
+		if confirm "Apply macOS defaults (input, Finder, Dock, screenshots, Safari)?"; then
+			bash "$REPO_DIR/macos-defaults.sh"
+		else
+			log "Skipped macOS defaults"
+		fi
+	fi
 
 	if [[ "$OS" == "arch" ]]; then
 		if confirm "Install Hyprland stack (hyprland, waybar, dunst, swayosd, playerctl, brightnessctl, hypridle, hyprlock, hyprpaper, grim, slurp, wob, sddm)?"; then
