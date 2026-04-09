@@ -19,6 +19,7 @@
         "custom/power-mode",
         "custom/vpn",
         "cpu",
+        "custom/temperature",
         "memory",
         "network",
         "pulseaudio",
@@ -54,6 +55,11 @@
         "interval": 5,
         "format": "{usage}%  ",
         "tooltip-format": "{avg_frequency:.1f}GHz\n{load:.1f} load"
+    },
+    "custom/temperature": {
+        "exec": "~/.config/waybar/scripts/temperature.sh",
+        "return-type": "json",
+        "interval": 5
     },
     "memory": {
         "interval": 5,

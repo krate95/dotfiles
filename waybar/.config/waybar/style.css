@@ -32,7 +32,8 @@ window#waybar > box {
 #backlight,
 #tray,
 #custom-idle,
-#custom-vpn {
+#custom-vpn,
+#custom-temperature {
     /* padding: 2px 2px; */
     /* margin: 2px 2px; */
     border-radius: 8px;
@@ -79,6 +80,20 @@ window#waybar > box {
 
 #cpu {
     color: @peach;
+}
+
+/* Temperature */
+
+#custom-temperature.normal {
+    color: @green;
+}
+
+#custom-temperature.warning {
+    color: @yellow;
+}
+
+#custom-temperature.critical {
+    color: @red;
 }
 
 /* Memory */
