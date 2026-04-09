@@ -1,4 +1,6 @@
 #!/bin/bash
+# Adjusts screen brightness via swayosd-client.
+# Usage: brightness.sh <up|down>  — changes brightness by 5% steps.
 
 action="$1"
 

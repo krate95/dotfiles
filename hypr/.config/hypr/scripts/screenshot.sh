@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Takes a screenshot using grim/slurp and copies it to the clipboard.
+# Usage: screenshot.sh [area|screen]  — defaults to area (interactive region select).
+# Saves PNG to $XDG_PICTURES_DIR/Screenshots/ and notifies via libnotify.
 
 set -euo pipefail
 

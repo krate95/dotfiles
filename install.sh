@@ -2,7 +2,24 @@
 set -euo pipefail
 
 # Multi-OS dotfiles installer
-# Supports: Ubuntu/Debian, macOS (Homebrew) and Arch Linux
+# Supports: Ubuntu/Debian, macOS (Homebrew), and Arch Linux
+#
+# Each step is opt-in (interactive y/N prompt). Installs:
+#   - stow                      — dotfile symlink manager
+#   - VS Code + extensions      — editor; extensions read from Code/extensions
+#   - kitty                     — terminal emulator (official installer)
+#   - Cascadia Code Nerd Font   — programming font
+#   - zsh + Oh My Zsh           — shell; plugins: zsh-autosuggestions, zsh-syntax-highlighting
+#   - Oh My Posh                — shell prompt theme engine
+#   - Neovim + ripgrep          — editor and fast search tool
+#   [Arch Linux only]
+#   - Hyprland stack            — hyprland, waybar, dunst, swayosd, playerctl, brightnessctl,
+#                                 hypridle, hyprlock, hyprpaper, grim, slurp, wob, sddm
+#   - SDDM theme                — catppuccin-mocha-lavender login screen theme
+#   - intel-undervolt (AUR)     — CPU undervolting for ThinkPads
+#   - thinkfan                  — fan speed control; config copied to /etc/thinkfan.conf
+#   - TLP                       — battery power management; config copied to /etc/tlp.conf
+#   - kanata (AUR)              — keyboard remapper; service override points to stowed config
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -301,15 +318,15 @@ install_kanata() {
 		return
 	fi
 
-	# uinput es necesario para que kanata cree dispositivos de entrada virtuales
+	# uinput is required for kanata to create virtual input devices
 	echo "uinput" | sudo tee /etc/modules-load.d/uinput.conf > /dev/null
 	sudo modprobe uinput || true
 
-	# El usuario necesita pertenecer a estos grupos para leer /dev/input y /dev/uinput
+	# User must belong to these groups to read /dev/input and /dev/uinput
 	sudo usermod -aG input,uinput "$USER"
 
-	# El servicio del paquete lee /etc/kanata/kanata.kbd por defecto.
-	# Lo redirigimos al config stowed en ~/.config/kanata/kanata.kbd
+	# The package service reads /etc/kanata/kanata.kbd by default.
+	# Override it to use the stowed config at ~/.config/kanata/kanata.kbd.
 	local cfg="$HOME/.config/kanata/kanata.kbd"
 	sudo mkdir -p /etc/systemd/system/kanata.service.d
 	sudo tee /etc/systemd/system/kanata.service.d/override.conf > /dev/null <<EOF
@@ -320,7 +337,7 @@ EOF
 
 	sudo systemctl daemon-reload
 	sudo systemctl enable kanata || true
-	log "kanata habilitado. Reinicia sesión para que los cambios de grupo surtan efecto."
+	log "kanata enabled. Log out and back in for group membership changes to take effect."
 }
 
 install_intel_undervolt() {

@@ -1,13 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Fedora Atomic bootstrap
-# - Host (rpm-ostree): git, stow, toolbox, kitty, curl, unzip, jq, ripgrep
-# - GUI apps (Flatpak): Bitwarden, Firefox, Vivaldi, VS Code
-# - Dev env: Toolbox
-# - Dotfiles: stow
+# Fedora Atomic (Silverblue/Kinoite) dotfiles bootstrap
+# Requires: Fedora Atomic with rpm-ostree. Re-run after reboot if packages are staged.
 #
-# Re-run after reboot if rpm-ostree stages packages.
+# Each step is opt-in (interactive y/N prompt). Installs:
+#   - rpm-ostree upgrade            — stage system update (reboot may be required)
+#   Host layer (rpm-ostree):
+#     git, stow, toolbox, kitty, curl, unzip, jq, ripgrep, zsh, fprintd
+#   Fonts:
+#     Cascadia Code Nerd Font       — installed to ~/.local/share/fonts
+#   Shell:
+#     Oh My Zsh                     — plugins: zsh-autosuggestions, zsh-syntax-highlighting
+#     Oh My Posh                    — prompt theme engine, installed to ~/.local/bin
+#   GUI apps (Flatpak via Flathub):
+#     Bitwarden, Firefox, Vivaldi, VS Code
+#   VS Code extensions              — read from Code/extensions
+#   Toolbox (container 'web'):
+#     git, curl, wget, nodejs, npm, python3, pip, jq, ripgrep, make, gcc, openssl
+#   Dotfiles:
+#     stow                          — symlinks all packages into $HOME
 
 REPO_DIR="${REPO_DIR:-$HOME/dotfiles}"
 TOOLBOX_NAME="${TOOLBOX_NAME:-web}"

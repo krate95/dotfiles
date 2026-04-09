@@ -1,4 +1,6 @@
 #!/bin/bash
+# Toggles idle inhibition: stops hypridle and blocks sleep/idle via systemd-inhibit,
+# or restores hypridle and kills the inhibitor. Sends a desktop notification on change.
 
 INHIBIT_PID_FILE="/tmp/idle-inhibit.pid"
 

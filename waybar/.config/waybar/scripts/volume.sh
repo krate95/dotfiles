@@ -1,4 +1,9 @@
 #!/bin/bash
+# Controls audio volume and mic mute via swayosd-client / pactl.
+# Usage: volume.sh <up|down|mute|mute-mic>
+#   up/down    — speaker volume ±5% (capped at 100%)
+#   mute       — toggle speaker mute
+#   mute-mic   — toggle default microphone mute
 
 action="$1"
 
