@@ -241,7 +241,8 @@ install_sway_packages() {
 		waybar dunst wofi \
 		playerctl brightnessctl \
 		grim slurp wl-clipboard \
-		network-manager-gnome || true
+		network-manager-gnome \
+		swayosd || true
 }
 
 install_thinkfan() {
@@ -370,7 +371,10 @@ apply_stow() {
 	fi
 
 	# Packages only relevant on Arch Linux (Hyprland/Wayland stack)
-	local arch_only_pkgs="hypr swayosd wob waybar mako dunst wallpapers kanata"
+	local arch_only_pkgs="hypr swayosd wob mako kanata"
+
+	# Packages shared between Arch and Kubuntu (Wayland userspace), skipped on macOS
+	local linux_only_pkgs="waybar dunst wallpapers"
 
 	# Packages only relevant on Kubuntu (Sway alongside Plasma)
 	local ubuntu_only_pkgs="sway"
@@ -398,6 +402,11 @@ apply_stow() {
 		# Skip Arch/Hypr-only packages on other systems
 		if [[ "$OS" != "arch" ]] && echo "$arch_only_pkgs" | grep -qw "$pkg"; then
 			log "Skipping $pkg (Arch/Hyprland-only)"
+			continue
+		fi
+		# Skip Linux-only Wayland userspace on macOS
+		if [[ "$OS" == "macos" ]] && echo "$linux_only_pkgs" | grep -qw "$pkg"; then
+			log "Skipping $pkg (Linux-only)"
 			continue
 		fi
 		# Skip Ubuntu/Kubuntu-only packages on other systems

@@ -44,7 +44,7 @@ seat seat0 xcursor_theme default 24
 ### AUTOSTART ###
 #################
 exec gnome-keyring-daemon --start --components=secrets
-exec waybar
+exec waybar -c ~/.config/waybar/config-sway
 exec dunst
 exec swayosd-server
 exec ~/.config/sway/scripts/sway-idle.sh

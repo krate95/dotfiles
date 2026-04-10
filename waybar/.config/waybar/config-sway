@@ -1,0 +1,138 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 36,
+    "spacing": 8,
+    "margin-top": 4,
+    "margin-left": 5,
+    "margin-right": 5,
+    "modules-left": [
+        "sway/workspaces",
+        "sway/window"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "tray",
+        "custom/idle",
+        "custom/power-mode",
+        "custom/vpn",
+        "cpu",
+        "custom/temperature",
+        "memory",
+        "network",
+        "pulseaudio",
+        "battery"
+    ],
+    "sway/workspaces": {
+        "format": "{name}",
+        "disable-scroll": false,
+        "all-outputs": true
+    },
+    "sway/window": {
+        "max-length": 40,
+        "separate-outputs": true
+    },
+    "clock": {
+        "format": "  {:%H:%M}",
+        "format-alt": "  {:%A, %d %B %Y  %H:%M}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>"
+    },
+    "cpu": {
+        "interval": 5,
+        "format": "{usage}%  ",
+        "tooltip-format": "{avg_frequency:.1f}GHz\n{load:.1f} load"
+    },
+    "custom/temperature": {
+        "exec": "~/.config/waybar/scripts/temperature.sh",
+        "return-type": "json",
+        "interval": 5
+    },
+    "memory": {
+        "interval": 5,
+        "format": "{percentage}%  ",
+        "tooltip-format": "{used:.1f}GiB / {total:.1f}GiB"
+    },
+    "battery": {
+        "interval": 10,
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}{capacity}%",
+        "format-charging": "󰂄{capacity}%",
+        "format-plugged": "{capacity}%",
+        "format-icons": [
+            "󰁺",
+            "󰁻",
+            "󰁼",
+            "󰁽",
+            "󰁾",
+            "󰁿",
+            "󰂀",
+            "󰂁",
+            "󰂂",
+            "󰁹"
+        ],
+        "tooltip-format": "{timeTo}\n{power:.1f}W"
+    },
+    "network": {
+        "format-wifi": " ",
+        "format-ethernet": "󰈀",
+        "format-disconnected": "󰖪 ",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)\n{ipaddr}",
+        "tooltip-format-disconnected": "Disconnected",
+        "on-click": "kitty -e nmtui"
+    },
+    "pulseaudio": {
+        "format": "{icon}",
+        "format-muted": " ",
+        "format-icons": {
+            "default": [
+                " ",
+                " ",
+                " "
+            ]
+        },
+        "on-click": "~/.config/waybar/scripts/volume.sh mute",
+        "on-scroll-up": "~/.config/waybar/scripts/volume.sh up",
+        "on-scroll-down": "~/.config/waybar/scripts/volume.sh down"
+    },
+    "backlight": {
+        "format": "{icon}  {percent}%",
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "on-scroll-up": "~/.config/waybar/scripts/brightness.sh up",
+        "on-scroll-down": "~/.config/waybar/scripts/brightness.sh down"
+    },
+    "custom/vpn": {
+        "exec": "ip link show wg0 &>/dev/null && echo '{\"text\":\"󰦝 \",\"class\":\"active\",\"tooltip\":\"VPN active\"}' || echo '{\"text\":\"󰦝 \",\"class\":\"inactive\",\"tooltip\":\"VPN inactive\"}'",
+        "return-type": "json",
+        "interval": 5
+    },
+    "custom/power-mode": {
+        "exec": "~/.config/waybar/scripts/power-mode.sh",
+        "return-type": "json",
+        "interval": 10
+    },
+    "custom/idle": {
+        "exec": "pgrep -u $USER -x swayidle >/dev/null && echo '{\"text\":\"󰒲 \",\"class\":\"active\",\"tooltip\":\"Sleep enabled\"}' || echo '{\"text\":\"󰛐 \",\"class\":\"inhibited\",\"tooltip\":\"Sleep inhibited\"}'",
+        "return-type": "json",
+        "interval": 5,
+        "on-click": "~/.config/sway/scripts/toggle-idle.sh"
+    },
+    "tray": {
+        "icon-size": 16,
+        "spacing": 8
+    }
+}
