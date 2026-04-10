@@ -48,6 +48,8 @@ exec waybar
 exec dunst
 exec swayosd-server
 exec ~/.config/sway/scripts/sway-idle.sh
+# NetworkManager secret agent (sin esto: "failed to get secrets, no agents")
+exec nm-applet --indicator
 
 ###############
 ### APPEARANCE

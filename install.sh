@@ -240,7 +240,8 @@ install_sway_packages() {
 		sway swayidle \
 		waybar dunst wofi \
 		playerctl brightnessctl \
-		grim slurp wl-clipboard || true
+		grim slurp wl-clipboard \
+		network-manager-gnome || true
 }
 
 install_thinkfan() {
