@@ -12,6 +12,11 @@ set -euo pipefail
 #   - zsh + Oh My Zsh           — shell; plugins: zsh-autosuggestions, zsh-syntax-highlighting
 #   - Oh My Posh                — shell prompt theme engine
 #   - Neovim + ripgrep          — editor and fast search tool
+#   [Kubuntu only]
+#   - Sway stack                — sway, swayidle, waybar, dunst, wofi, grim/slurp,
+#                                 playerctl, brightnessctl; coexists with Plasma as an
+#                                 SDDM session, reusing KDE's lock (kscreenlocker) and
+#                                 Breeze SDDM theme
 #   [macOS only]
 #   - macOS defaults             — system preferences via macos-defaults.sh (input, Finder,
 #                                  Dock, screenshots, Safari, quality-of-life tweaks)
@@ -221,6 +226,23 @@ install_hypr_packages() {
 	fi
 }
 
+install_sway_packages() {
+	# Installs sway on Kubuntu so it shows up as an alternative SDDM session
+	# alongside Plasma. Uses KDE's lock (kscreenlocker) and SDDM theme (Breeze)
+	# directly from the Plasma install.
+	if [[ "$OS" != "ubuntu" ]]; then
+		err "Sway stack install is only supported on Kubuntu/Ubuntu"
+		return 1
+	fi
+
+	sudo apt-get update || true
+	sudo apt-get install -y \
+		sway swayidle \
+		waybar dunst wofi \
+		playerctl brightnessctl \
+		grim slurp wl-clipboard || true
+}
+
 install_thinkfan() {
 	if [[ "$OS" != "arch" ]]; then
 		err "thinkfan is only supported on Arch Linux"
@@ -347,7 +369,10 @@ apply_stow() {
 	fi
 
 	# Packages only relevant on Arch Linux (Hyprland/Wayland stack)
-	local arch_only_pkgs="hypr sway swayosd wob waybar mako dunst wallpapers kanata"
+	local arch_only_pkgs="hypr swayosd wob waybar mako dunst wallpapers kanata"
+
+	# Packages only relevant on Kubuntu (Sway alongside Plasma)
+	local ubuntu_only_pkgs="sway"
 
 	# These configs belong in /etc/, not $HOME — handled by their own install functions
 	local etc_pkgs="thinkfan tlp"
@@ -372,6 +397,11 @@ apply_stow() {
 		# Skip Arch/Hypr-only packages on other systems
 		if [[ "$OS" != "arch" ]] && echo "$arch_only_pkgs" | grep -qw "$pkg"; then
 			log "Skipping $pkg (Arch/Hyprland-only)"
+			continue
+		fi
+		# Skip Ubuntu/Kubuntu-only packages on other systems
+		if [[ "$OS" != "ubuntu" ]] && echo "$ubuntu_only_pkgs" | grep -qw "$pkg"; then
+			log "Skipping $pkg (Kubuntu-only)"
 			continue
 		fi
 		# Skip /etc/ packages — they are copied by their install functions, not stowed
@@ -494,6 +524,14 @@ main() {
 			install_kanata
 		else
 			log "Skipped kanata"
+		fi
+	fi
+
+	if [[ "$OS" == "ubuntu" ]]; then
+		if confirm "Install Sway stack (sway, swayidle, waybar, dunst, wofi, grim/slurp, etc.)?"; then
+			install_sway_packages
+		else
+			log "Skipped Sway stack"
 		fi
 	fi
 

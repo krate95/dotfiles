@@ -1,5 +1,7 @@
 ### ######################################################################
-### Sway config — replica funcional de la configuración de Hyprland.
+### Sway config para Kubuntu — replica funcional de la configuración de
+### Hyprland. Usa KDE lock (kscreenlocker) y vive junto a Plasma como
+### sesión alternativa seleccionable desde SDDM.
 ### Notas: sway no soporta nativamente rounding, blur ni animaciones.
 ### ######################################################################
 
@@ -84,7 +86,8 @@ bindsym $mod+e exec $fileManager
 bindsym $mod+v floating toggle
 bindsym $mod+space exec $menu
 bindsym $mod+j split toggle
-bindsym $mod+l exec swaylock
+# Lock: loginctl dispara el handler 'lock' de swayidle (kscreenlocker_greet).
+bindsym $mod+l exec loginctl lock-session
 
 # Foco con flechas
 bindsym $mod+Left focus left
