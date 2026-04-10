@@ -1,0 +1,164 @@
+### ######################################################################
+### Sway config — replica funcional de la configuración de Hyprland.
+### Notas: sway no soporta nativamente rounding, blur ni animaciones.
+### ######################################################################
+
+################
+### VARIABLES ###
+################
+set $mod Mod4
+set $term kitty
+set $fileManager thunar
+set $menu wofi --show drun
+
+###############
+### OUTPUTS ###
+###############
+# Escala equivalente a hyprland: monitor=eDP-1,preferred,auto,1.25
+output eDP-1 scale 1.25
+# Wallpaper (reemplaza a hyprpaper)
+output * bg /home/krate/.config/wallpapers/sanderson-simple.png fill
+
+#############
+### INPUT ###
+#############
+input "type:keyboard" {
+    xkb_layout us
+    xkb_variant altgr-intl
+}
+
+input "type:touchpad" {
+    natural_scroll enabled
+    tap enabled
+    dwt enabled
+}
+
+focus_follows_mouse yes
+
+# Cursor
+seat seat0 xcursor_theme default 24
+
+#################
+### AUTOSTART ###
+#################
+exec gnome-keyring-daemon --start --components=secrets
+exec waybar
+exec dunst
+exec swayosd-server
+exec ~/.config/sway/scripts/sway-idle.sh
+
+###############
+### APPEARANCE
+###############
+# Gaps equivalentes a general { gaps_in = 5; gaps_out = 5 }
+gaps inner 5
+gaps outer 5
+
+# Border 2px, sin titlebars (como hyprland)
+default_border pixel 2
+default_floating_border pixel 2
+titlebar_padding 1
+font pango:CaskaydiaCove Nerd Font 10
+
+# Colores equivalentes:
+#   active_border   = #b7bdf8
+#   inactive_border = #595959
+#                       border    bground   text      indicator child_border
+client.focused          #b7bdf8   #b7bdf8   #1e2030   #b7bdf8   #b7bdf8
+client.focused_inactive #595959   #595959   #ffffff   #595959   #595959
+client.unfocused        #595959   #595959   #ffffff   #595959   #595959
+client.urgent           #eb6f92   #eb6f92   #1e2030   #eb6f92   #eb6f92
+
+####################
+### KEYBINDINGS  ###
+####################
+
+# Arrastrar/redimensionar floats con el modificador
+floating_modifier $mod normal
+
+bindsym $mod+Return exec $term
+bindsym $mod+q kill
+bindsym $mod+m exec swaymsg exit
+bindsym $mod+Ctrl+Shift+r reload
+bindsym $mod+e exec $fileManager
+bindsym $mod+v floating toggle
+bindsym $mod+space exec $menu
+bindsym $mod+j split toggle
+bindsym $mod+l exec swaylock
+
+# Foco con flechas
+bindsym $mod+Left focus left
+bindsym $mod+Right focus right
+bindsym $mod+Up focus up
+bindsym $mod+Down focus down
+
+# Workspaces
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+# Scratchpad (equivalente al special workspace "magic")
+bindsym $mod+s scratchpad show
+bindsym $mod+Shift+s move scratchpad
+
+# Scroll para cambiar de workspace
+bindsym $mod+button4 workspace prev_on_output
+bindsym $mod+button5 workspace next_on_output
+
+# Toggle idle
+bindsym $mod+Shift+i exec ~/.config/sway/scripts/toggle-idle.sh
+
+# Screenshots
+bindsym Print exec ~/.config/sway/scripts/screenshot.sh area
+bindsym Shift+Print exec ~/.config/sway/scripts/screenshot.sh screen
+
+# Volumen y brillo (--locked = responde también con pantalla bloqueada)
+bindsym --locked XF86AudioRaiseVolume exec ~/.config/waybar/scripts/volume.sh up
+bindsym --locked XF86AudioLowerVolume exec ~/.config/waybar/scripts/volume.sh down
+bindsym --locked XF86AudioMute exec ~/.config/waybar/scripts/volume.sh mute
+bindsym --locked XF86AudioMicMute exec ~/.config/waybar/scripts/volume.sh mute-mic
+bindsym --locked XF86MonBrightnessUp exec ~/.config/waybar/scripts/brightness.sh up
+bindsym --locked XF86MonBrightnessDown exec ~/.config/waybar/scripts/brightness.sh down
+
+# Playerctl con swayosd
+bindsym --locked XF86AudioNext exec swayosd-client --playerctl next
+bindsym --locked XF86AudioPause exec swayosd-client --playerctl play-pause
+bindsym --locked XF86AudioPlay exec swayosd-client --playerctl play-pause
+bindsym --locked XF86AudioPrev exec swayosd-client --playerctl prev
+
+# CapsLock OSD
+bindsym --release Caps_Lock exec swayosd-client --caps-lock-led input3::capslock
+
+#############
+### GESTURES
+#############
+# gesture = 3, horizontal, workspace
+bindgesture swipe:3:right workspace prev_on_output
+bindgesture swipe:3:left  workspace next_on_output
+
+################
+### WINDOW RULES
+################
+# Hyprland-run equivalente: ventana flotante anclada abajo-izquierda
+for_window [app_id="hyprland-run"] floating enable, resize set 600 80, move position 20 px 100 px from bottom
+
+# Incluir overrides locales opcionales
+include /etc/sway/config.d/*

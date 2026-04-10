@@ -347,7 +347,7 @@ apply_stow() {
 	fi
 
 	# Packages only relevant on Arch Linux (Hyprland/Wayland stack)
-	local arch_only_pkgs="hypr swayosd wob waybar mako dunst wallpapers kanata"
+	local arch_only_pkgs="hypr sway swayosd wob waybar mako dunst wallpapers kanata"
 
 	# These configs belong in /etc/, not $HOME — handled by their own install functions
 	local etc_pkgs="thinkfan tlp"
