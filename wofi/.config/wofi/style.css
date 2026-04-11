@@ -1,0 +1,64 @@
+/* Catppuccin Mocha — matches Hyprland/Waybar theme */
+
+* {
+    font-family: "JetBrains Mono Nerd Font", monospace;
+    font-size: 14px;
+}
+
+window {
+    background-color: rgba(30, 30, 46, 0.92); /* base with slight transparency */
+    border: 1px solid #313244;                /* surface0 */
+    border-radius: 12px;
+    color: #cdd6f4;                           /* text */
+}
+
+#input {
+    background-color: #181825;               /* mantle */
+    color: #cdd6f4;                          /* text */
+    border: 1px solid #45475a;              /* surface1 */
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin: 8px;
+    outline: none;
+}
+
+#input:focus {
+    border-color: #b4befe;                   /* lavender — matches active_border */
+}
+
+#outer-box {
+    padding: 4px;
+}
+
+#scroll {
+    margin: 0 4px 4px 4px;
+}
+
+#inner-box {
+    padding: 0;
+}
+
+#entry {
+    padding: 6px 12px;
+    border-radius: 8px;
+    color: #a6adc8;                          /* subtext0 */
+    background-color: transparent;
+}
+
+#entry:selected {
+    background-color: #cba6f7;              /* mauve — matches waybar active workspace */
+    color: #1e1e2e;                         /* base */
+}
+
+#entry:hover {
+    background-color: #45475a;              /* surface1 */
+    color: #cdd6f4;                         /* text */
+}
+
+#text {
+    margin: 0 4px;
+}
+
+#img {
+    margin-right: 6px;
+}
