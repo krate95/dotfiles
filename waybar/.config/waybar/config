@@ -23,7 +23,8 @@
         "memory",
         "network",
         "pulseaudio",
-        "battery"
+        "battery",
+        "custom/power-menu"
     ],
     "hyprland/workspaces": {
         "format": "{icon}",
@@ -146,5 +147,10 @@
     "tray": {
         "icon-size": 16,
         "spacing": 8
+    },
+    "custom/power-menu": {
+        "format": "󰐥",
+        "tooltip": false,
+        "on-click": "~/.config/hypr/scripts/powermenu.sh"
     }
 }

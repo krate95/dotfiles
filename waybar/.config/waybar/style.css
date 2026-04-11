@@ -33,7 +33,8 @@ window#waybar > box {
 #tray,
 #custom-idle,
 #custom-vpn,
-#custom-temperature {
+#custom-temperature,
+#custom-power-menu {
     /* padding: 2px 2px; */
     /* margin: 2px 2px; */
     border-radius: 8px;
@@ -193,6 +194,19 @@ window#waybar > box {
 
 #custom-vpn.inactive {
     color: @inactive;
+}
+
+/* Power menu */
+
+#custom-power-menu {
+    color: @red;
+    padding: 0 4px;
+}
+
+#custom-power-menu:hover {
+    color: @base;
+    background: @red;
+    border-radius: 8px;
 }
 
 tooltip {
