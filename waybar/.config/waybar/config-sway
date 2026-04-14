@@ -15,6 +15,7 @@
     ],
     "modules-right": [
         "tray",
+        "bluetooth",
         "custom/idle",
         "custom/power-mode",
         "custom/vpn",
@@ -116,6 +117,16 @@
         ],
         "on-scroll-up": "~/.config/waybar/scripts/brightness.sh up",
         "on-scroll-down": "~/.config/waybar/scripts/brightness.sh down"
+    },
+    "bluetooth": {
+        "format": "󰂯",
+        "format-connected": "󰂱",
+        "format-connected-battery": "󰂱 {device_battery_percentage}%",
+        "format-off": "󰂲",
+        "tooltip-format": "{controller_alias}",
+        "tooltip-format-connected": "{device_alias}",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "on-click": "~/.config/waybar/scripts/wofi-bluetooth"
     },
     "custom/vpn": {
         "exec": "ip link show wg0 &>/dev/null && echo '{\"text\":\"󰦝 \",\"class\":\"active\",\"tooltip\":\"VPN active\"}' || echo '{\"text\":\"󰦝 \",\"class\":\"inactive\",\"tooltip\":\"VPN inactive\"}'",

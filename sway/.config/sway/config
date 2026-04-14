@@ -16,9 +16,7 @@ set $menu wofi --show drun
 ###############
 ### OUTPUTS ###
 ###############
-# Ultrawide izquierda, portátil derecha
-output DP-4  resolution 3440x1440 position 0 0
-output eDP-1 resolution 1920x1080 scale 1.25 position 3440 0
+# Los outputs los gestiona kanshi dinámicamente (ver ~/.config/kanshi/config)
 
 #############
 ### INPUT ###
@@ -43,6 +41,7 @@ seat seat0 xcursor_theme default 24
 ### AUTOSTART ###
 #################
 exec kwalletd5
+exec_always --no-startup-id pkill kanshi; kanshi
 exec_always --no-startup-id pkill waybar; waybar -c ~/.config/waybar/config-sway -s ~/.config/waybar/style-sway.css &
 exec dunst
 exec swayosd-server
