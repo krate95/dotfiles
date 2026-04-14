@@ -23,7 +23,8 @@
         "memory",
         "network",
         "pulseaudio",
-        "battery"
+        "battery",
+        "custom/power-menu"
     ],
     "sway/workspaces": {
         "format": "{name}",
@@ -134,5 +135,10 @@
     "tray": {
         "icon-size": 16,
         "spacing": 8
+    },
+    "custom/power-menu": {
+        "format": "󰐥",
+        "tooltip": false,
+        "on-click": "~/.config/sway/scripts/powermenu.sh"
     }
 }

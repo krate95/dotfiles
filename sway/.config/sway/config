@@ -16,10 +16,9 @@ set $menu wofi --show drun
 ###############
 ### OUTPUTS ###
 ###############
-# Escala equivalente a hyprland: monitor=eDP-1,preferred,auto,1.25
-output eDP-1 scale 1.25
-# Wallpaper (reemplaza a hyprpaper)
-output * bg /home/krate/.config/wallpapers/sanderson-simple.png fill
+# Ultrawide izquierda, portátil derecha
+output DP-4  resolution 3440x1440 position 0 0
+output eDP-1 resolution 1920x1080 scale 1.25 position 3440 0
 
 #############
 ### INPUT ###
@@ -44,7 +43,7 @@ seat seat0 xcursor_theme default 24
 ### AUTOSTART ###
 #################
 exec gnome-keyring-daemon --start --components=secrets
-exec waybar -c ~/.config/waybar/config-sway
+exec_always --no-startup-id pkill waybar; waybar -c ~/.config/waybar/config-sway &
 exec dunst
 exec swayosd-server
 exec ~/.config/sway/scripts/sway-idle.sh
