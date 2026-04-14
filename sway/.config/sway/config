@@ -42,8 +42,8 @@ seat seat0 xcursor_theme default 24
 #################
 ### AUTOSTART ###
 #################
-exec gnome-keyring-daemon --start --components=secrets
-exec_always --no-startup-id pkill waybar; waybar -c ~/.config/waybar/config-sway &
+exec kwalletd5
+exec_always --no-startup-id pkill waybar; waybar -c ~/.config/waybar/config-sway -s ~/.config/waybar/style-sway.css &
 exec dunst
 exec swayosd-server
 exec ~/.config/sway/scripts/sway-idle.sh
@@ -80,6 +80,7 @@ client.urgent           #eb6f92   #eb6f92   #1e2030   #eb6f92   #eb6f92
 floating_modifier $mod normal
 
 bindsym $mod+Return exec $term
+bindsym $mod+slash exec ~/.config/sway/scripts/cheatsheet.sh
 bindsym $mod+q kill
 bindsym $mod+m exec swaymsg exit
 bindsym $mod+Ctrl+Shift+r reload
@@ -95,6 +96,12 @@ bindsym $mod+Left focus left
 bindsym $mod+Right focus right
 bindsym $mod+Up focus up
 bindsym $mod+Down focus down
+
+# Mover ventana con flechas
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Down move down
 
 # Workspaces
 bindsym $mod+1 workspace number 1
@@ -163,6 +170,9 @@ bindgesture swipe:3:left  workspace next_on_output
 ################
 # Hyprland-run equivalente: ventana flotante anclada abajo-izquierda
 for_window [app_id="hyprland-run"] floating enable, resize set 600 80, move position 20 px 100 px from bottom
+
+for_window [class="Bitwarden"] floating enable
+for_window [class="FortiClient"] floating enable
 
 # Incluir overrides locales opcionales
 include /etc/sway/config.d/*

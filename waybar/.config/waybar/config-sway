@@ -1,7 +1,7 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 36,
+    "height": 44,
     "spacing": 8,
     "margin-top": 4,
     "margin-left": 5,
@@ -79,6 +79,7 @@
         "tooltip-format": "{timeTo}\n{power:.1f}W"
     },
     "network": {
+        "interface": "wlp0s20f3",
         "format-wifi": " ",
         "format-ethernet": "󰈀",
         "format-disconnected": "󰖪 ",
