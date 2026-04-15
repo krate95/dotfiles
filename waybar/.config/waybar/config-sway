@@ -1,7 +1,7 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 36,
+    "height": 44,
     "spacing": 8,
     "margin-top": 4,
     "margin-left": 5,
@@ -15,6 +15,7 @@
     ],
     "modules-right": [
         "tray",
+        "bluetooth",
         "custom/idle",
         "custom/power-mode",
         "custom/vpn",
@@ -23,7 +24,8 @@
         "memory",
         "network",
         "pulseaudio",
-        "battery"
+        "battery",
+        "custom/power-menu"
     ],
     "sway/workspaces": {
         "format": "{name}",
@@ -78,6 +80,7 @@
         "tooltip-format": "{timeTo}\n{power:.1f}W"
     },
     "network": {
+        "interface": "wlp0s20f3",
         "format-wifi": " ",
         "format-ethernet": "󰈀",
         "format-disconnected": "󰖪 ",
@@ -115,6 +118,16 @@
         "on-scroll-up": "~/.config/waybar/scripts/brightness.sh up",
         "on-scroll-down": "~/.config/waybar/scripts/brightness.sh down"
     },
+    "bluetooth": {
+        "format": "󰂯",
+        "format-connected": "󰂱",
+        "format-connected-battery": "󰂱 {device_battery_percentage}%",
+        "format-off": "󰂲",
+        "tooltip-format": "{controller_alias}",
+        "tooltip-format-connected": "{device_alias}",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "on-click": "~/.config/waybar/scripts/wofi-bluetooth"
+    },
     "custom/vpn": {
         "exec": "ip link show wg0 &>/dev/null && echo '{\"text\":\"󰦝 \",\"class\":\"active\",\"tooltip\":\"VPN active\"}' || echo '{\"text\":\"󰦝 \",\"class\":\"inactive\",\"tooltip\":\"VPN inactive\"}'",
         "return-type": "json",
@@ -134,5 +147,10 @@
     "tray": {
         "icon-size": 16,
         "spacing": 8
+    },
+    "custom/power-menu": {
+        "format": "󰐥",
+        "tooltip": false,
+        "on-click": "~/.config/sway/scripts/powermenu.sh"
     }
 }

@@ -1,0 +1,230 @@
+@import "mocha.css";
+
+@define-color inactive @overlay0;
+
+* {
+    font-family: "JetBrains Mono Nerd Font", "Font Awesome 6 Free", sans-serif;
+    font-size: 16px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: transparent;
+}
+
+window#waybar > box {
+    background: alpha(@base, 0.85);
+    border: 1px solid @surface0;
+    border-radius: 12px;
+    padding: 2px 10px;
+}
+
+/* ---- Modules ---- */
+
+#workspaces,
+#window,
+#clock,
+#cpu,
+#memory,
+#battery,
+#network,
+#pulseaudio,
+#backlight,
+#tray,
+#bluetooth,
+#custom-idle,
+#custom-vpn,
+#custom-temperature,
+#custom-power-menu {
+    border-radius: 8px;
+    background: transparent;
+    color: @text;
+}
+
+/* Workspaces */
+
+#workspaces button {
+    padding: 0 8px;
+    margin: 2px 1px;
+    border-radius: 6px;
+    color: @overlay0;
+    background: transparent;
+    border: none;
+}
+
+#workspaces button.focused {
+    color: @base;
+    background: @mauve;
+}
+
+#workspaces button:hover {
+    color: @base;
+    background: @surface1;
+}
+
+/* Window title */
+
+#window {
+    color: @subtext1;
+    font-style: italic;
+}
+
+/* Clock */
+
+#clock {
+    color: @blue;
+    font-weight: bold;
+}
+
+/* CPU */
+
+#cpu {
+    color: @peach;
+}
+
+/* Temperature */
+
+#custom-temperature.normal {
+    color: @green;
+}
+
+#custom-temperature.warning {
+    color: @yellow;
+}
+
+#custom-temperature.critical {
+    color: @red;
+}
+
+/* Memory */
+
+#memory {
+    color: @teal;
+}
+
+/* Battery */
+
+#battery {
+    color: @green;
+}
+
+#battery.charging {
+    color: @green;
+}
+
+#battery.warning:not(.charging) {
+    color: @yellow;
+}
+
+#battery.critical:not(.charging) {
+    color: @red;
+    animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+    to { color: @surface0; }
+}
+
+/* Network */
+
+#network {
+    color: @sapphire;
+}
+
+#network.disconnected {
+    color: @overlay0;
+}
+
+/* Bluetooth */
+
+#bluetooth {
+    color: @overlay0;
+}
+
+#bluetooth.connected {
+    color: @blue;
+}
+
+#bluetooth.off {
+    color: @inactive;
+}
+
+/* Audio */
+
+#pulseaudio {
+    color: @lavender;
+}
+
+#pulseaudio.muted {
+    color: @inactive;
+}
+
+/* Backlight */
+
+#backlight {
+    color: @yellow;
+}
+
+/* Idle inhibitor */
+
+#custom-idle.active {
+    color: @overlay0;
+}
+
+#custom-idle.inhibited {
+    color: @yellow;
+}
+
+/* Tray */
+
+#tray {
+    color: @text;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
+
+/* Power mode */
+
+#custom-power-mode.ac {
+    color: @yellow;
+}
+
+#custom-power-mode.bat {
+    color: @green;
+}
+
+/* VPN */
+
+#custom-vpn.active {
+    color: @green;
+}
+
+#custom-vpn.inactive {
+    color: @inactive;
+}
+
+/* Power menu */
+
+#custom-power-menu {
+    color: @red;
+    padding: 0 4px;
+}
+
+#custom-power-menu:hover {
+    color: @base;
+    background: @red;
+    border-radius: 8px;
+}
+
+tooltip {
+    background: @base;
+    border: 1px solid @surface0;
+    border-radius: 8px;
+    color: @text;
+}

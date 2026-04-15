@@ -139,6 +139,7 @@ source "$ZSH_CUSTOM/aliases.zsh"
 # Add ~/.local/bin only on Linux
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   export PATH="$PATH:$HOME/.local/bin"
+  export XDG_DATA_DIRS="/var/lib/snapd/desktop:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
 fi
 
 eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/config.omp.json)"
