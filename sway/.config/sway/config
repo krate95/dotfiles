@@ -53,8 +53,8 @@ exec nm-applet --indicator
 ### APPEARANCE
 ###############
 # Gaps equivalentes a general { gaps_in = 5; gaps_out = 5 }
-gaps inner 5
-gaps outer 5
+gaps inner 3
+gaps outer 3
 
 # Border 2px, sin titlebars (como hyprland)
 default_border pixel 2
