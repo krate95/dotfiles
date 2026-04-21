@@ -78,6 +78,10 @@ Sway launches waybar with the `-c ~/.config/waybar/config-sway` flag to use the 
 
 Keyboard remapping for the ThinkPad T490s. `install.sh` creates a systemd drop-in at `/etc/systemd/system/kanata.service.d/override.conf` pointing to the stowed config at `~/.config/kanata/kanata.kbd`. Requires the user to be in the `input` and `uinput` groups.
 
+## Git commits
+
+Never add `Co-Authored-By` trailers to commit messages.
+
 ## Theme
 
 Catppuccin Mocha throughout: kitty terminal, Neovim, waybar CSS, SDDM login screen.
