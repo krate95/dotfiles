@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Fedora Atomic (Silverblue/Kinoite) dotfiles bootstrap
-# Requires: Fedora Atomic with rpm-ostree. Re-run after reboot if packages are staged.
+# Fedora Atomic Sway dotfiles bootstrap
+# Requires: Fedora Atomic (Sway spin or any Atomic variant) with rpm-ostree.
+# Re-run after reboot if packages are staged.
 #
 # Each step is opt-in (interactive y/N prompt). Installs:
 #   - rpm-ostree upgrade            — stage system update (reboot may be required)
 #   Host layer (rpm-ostree):
 #     git, stow, toolbox, kitty, curl, unzip, jq, ripgrep, zsh, fprintd
+#   Sway stack (rpm-ostree):
+#     sway, swaybg, swaylock, swayidle, waybar, dunst, wofi,
+#     playerctl, brightnessctl, grim, slurp, wl-clipboard, thunar,
+#     NetworkManager-tui, network-manager-applet,
+#     gnome-keyring, polkit-gnome
+#     (swayosd vía COPR erikreider/SwayOSD — opcional)
 #   Fonts:
 #     Cascadia Code Nerd Font       — installed to ~/.local/share/fonts
 #   Shell:
@@ -19,7 +26,7 @@ set -euo pipefail
 #   Toolbox (container 'web'):
 #     git, curl, wget, nodejs, npm, python3, pip, jq, ripgrep, make, gcc, openssl
 #   Dotfiles:
-#     stow                          — symlinks all packages into $HOME
+#     stow                          — symlinks relevant packages into $HOME
 
 REPO_DIR="${REPO_DIR:-$HOME/dotfiles}"
 TOOLBOX_NAME="${TOOLBOX_NAME:-web}"
@@ -88,6 +95,61 @@ stage_host_pkgs() {
   fi
 
   return 0
+}
+
+# -------------------------
+# Sway stack (rpm-ostree)
+# -------------------------
+install_sway_stack() {
+  set +e
+  stage_host_pkgs \
+    sway swaybg swaylock swayidle \
+    waybar dunst wofi \
+    playerctl brightnessctl \
+    grim slurp wl-clipboard \
+    thunar \
+    NetworkManager-tui network-manager-applet \
+    gnome-keyring polkit-gnome
+  local rc=$?
+  set -e
+
+  if [[ "$rc" == "10" ]]; then
+    err "Sway packages staged. Reboot now and re-run the script."
+    exit 0
+  fi
+}
+
+# swayosd lives in a COPR (erikreider/SwayOSD). Atomic no expone dnf copr,
+# así que usamos el repo .repo directo antes del rpm-ostree install.
+install_swayosd() {
+  local repo_file="/etc/yum.repos.d/_copr_erikreider-SwayOSD.repo"
+  if [[ ! -f "$repo_file" ]]; then
+    log "Añadiendo COPR erikreider/SwayOSD"
+    local fedora_ver
+    fedora_ver="$(rpm -E %fedora)"
+    sudo tee "$repo_file" >/dev/null <<EOF
+[copr:copr.fedorainfracloud.org:erikreider:SwayOSD]
+name=Copr repo for SwayOSD owned by erikreider
+baseurl=https://download.copr.fedorainfracloud.org/results/erikreider/SwayOSD/fedora-${fedora_ver}-\$basearch/
+type=rpm-md
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://download.copr.fedorainfracloud.org/results/erikreider/SwayOSD/pubkey.gpg
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
+EOF
+  fi
+
+  set +e
+  stage_host_pkgs swayosd
+  local rc=$?
+  set -e
+
+  if [[ "$rc" == "10" ]]; then
+    err "swayosd staged. Reboot now and re-run the script."
+    exit 0
+  fi
 }
 
 # -------------------------
@@ -231,11 +293,17 @@ apply_stow() {
   log "Running stow in $REPO_DIR"
   cd "$REPO_DIR"
 
-  local exclude_regex='^(\.git|\.github|scripts?|docs?|install)$'
+  # Paquetes que no son para Fedora:
+  #   - hypr, mako, wob, kanata    → Arch-only (Hyprland stack)
+  #   - sway, kanshi               → Kubuntu-only (config para KDE/kscreenlocker)
+  #   - thinkfan, tlp              → /etc, gestionados por install.sh (Arch)
+  #   - Code-macos                 → macOS-only
+  #   - kde-layouts, sddm-theme    → no son dotfiles
+  local skip_regex='^(\.git|\.github|hypr|mako|wob|kanata|sway|kanshi|thinkfan|tlp|Code-macos|kde-layouts|sddm-theme)$'
 
   for d in */; do
     pkg="${d%/}"
-    [[ "$pkg" =~ $exclude_regex ]] && continue
+    [[ "$pkg" =~ $skip_regex ]] && { log "Skip: $pkg"; continue; }
     log "Stowing: $pkg"
     stow -v --no-folding -t "$HOME" "$pkg" || log "stow failed for $pkg"
   done
@@ -267,6 +335,14 @@ main() {
       err "Host packages staged. Reboot now and re-run the script."
       exit 0
     fi
+  fi
+
+  if confirm "Install Sway stack (sway, swaybg, swaylock, swayidle, waybar, dunst, wofi, grim/slurp, thunar, NetworkManager, gnome-keyring, polkit-gnome)?"; then
+    install_sway_stack
+  fi
+
+  if confirm "Install swayosd (COPR erikreider/SwayOSD)?"; then
+    install_swayosd
   fi
 
   if confirm "Install fonts?"; then

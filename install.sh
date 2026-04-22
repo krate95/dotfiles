@@ -379,6 +379,9 @@ apply_stow() {
 	# Packages only relevant on Kubuntu (Sway alongside Plasma)
 	local ubuntu_only_pkgs="sway"
 
+	# Packages only relevant on Fedora Atomic Sway — never stowed here
+	local fedora_only_pkgs="sway-fedora"
+
 	# These configs belong in /etc/, not $HOME — handled by their own install functions
 	local etc_pkgs="thinkfan tlp"
 
@@ -387,6 +390,11 @@ apply_stow() {
 		pkg="${d%/}"
 		# Ignore non-dotfile folders
 		if [[ "$pkg" == ".git" || "$pkg" == "kde-layouts" || "$pkg" == "sddm-theme" ]]; then
+			continue
+		fi
+		# Always skip Fedora-only packages on this installer (Arch/Kubuntu/macOS)
+		if echo "$fedora_only_pkgs" | grep -qw "$pkg"; then
+			log "Skipping $pkg (Fedora-only)"
 			continue
 		fi
 		# Code-macos is macOS-only (Library/Application Support path)
