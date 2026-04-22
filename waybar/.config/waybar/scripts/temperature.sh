@@ -10,4 +10,4 @@ elif [ "$temp" -ge 60 ]; then class="warning"
 else                          class="normal"
 fi
 
-echo "{\"text\":\"󰔄 ${temp}°\",\"class\":\"${class}\",\"tooltip\":\"CPU Package: ${temp}°C\"}"
+echo "{\"text\":\"${temp}󰔄 \",\"class\":\"${class}\",\"tooltip\":\"CPU Package: ${temp}°C\"}"
