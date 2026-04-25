@@ -53,7 +53,7 @@
     },
     "memory": {
         "interval": 5,
-        "format": "{percentage}%  ",
+        "format": "{percentage}%    ",
         "tooltip-format": "{used:.1f}GiB / {total:.1f}GiB"
     },
     "battery": {
