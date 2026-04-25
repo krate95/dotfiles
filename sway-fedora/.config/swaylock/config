@@ -5,9 +5,6 @@ ignore-empty-password
 show-failed-attempts
 font=CaskaydiaCove Nerd Font
 
-image=~/.config/wallpapers/sanderson-simple.png
-scaling=fill
-
 color=1e2030
 
 inside-color=1e2030cc
@@ -39,7 +36,7 @@ text-caps-lock-color=eed49f
 text-ver-color=c8c8c8
 text-wrong-color=eb6f92
 
-indicator
+indicator-idle-visible
 indicator-radius=120
 indicator-thickness=10
 indicator-caps-lock

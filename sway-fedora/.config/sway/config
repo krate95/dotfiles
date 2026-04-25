@@ -98,8 +98,12 @@ bindsym $mod+e exec $fileManager
 bindsym $mod+v floating toggle
 bindsym $mod+space exec $menu
 bindsym $mod+j split toggle
-# Lock: loginctl dispara el handler 'lock' de swayidle (swaylock)
-bindsym $mod+l exec loginctl lock-session
+# Manual lock: call swaylock directly so it does not depend on swayidle running.
+bindsym $mod+l exec swaylock -f
+
+# Lock immediately when the laptop lid closes. Relying only on swayidle's
+# before-sleep hook misses cases where logind blanks the panel without suspend.
+bindswitch --locked lid:on exec swaylock -f
 
 # Foco con flechas
 bindsym $mod+Left focus left
