@@ -82,6 +82,10 @@ Keyboard remapping for the ThinkPad T490s. `install.sh` creates a systemd drop-i
 
 Never add `Co-Authored-By` trailers to commit messages.
 
+## Language conventions
+
+Always write comments and documentation in English.
+
 ## Theme
 
 Catppuccin Mocha throughout: kitty terminal, Neovim, waybar CSS, SDDM login screen.

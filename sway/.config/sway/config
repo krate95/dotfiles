@@ -1,8 +1,8 @@
 ### ######################################################################
-### Sway config para Kubuntu — replica funcional de la configuración de
-### Hyprland. Usa KDE lock (kscreenlocker) y vive junto a Plasma como
-### sesión alternativa seleccionable desde SDDM.
-### Notas: sway no soporta nativamente rounding, blur ni animaciones.
+### Sway config for Kubuntu — functional replica of the Hyprland config.
+### Uses KDE lock (kscreenlocker) and lives alongside Plasma as an
+### alternative session selectable from SDDM.
+### Notes: Sway does not natively support rounding, blur, or animations.
 ### ######################################################################
 
 ################
@@ -16,7 +16,7 @@ set $menu wofi --show drun
 ###############
 ### OUTPUTS ###
 ###############
-# Los outputs los gestiona kanshi dinámicamente (ver ~/.config/kanshi/config)
+# Outputs are managed dynamically by kanshi (see ~/.config/kanshi/config)
 
 #############
 ### INPUT ###
@@ -46,23 +46,25 @@ exec_always --no-startup-id sh -c 'pkill -x waybar || true; exec waybar -c ~/.co
 exec dunst
 exec swayosd-server
 exec ~/.config/sway/scripts/sway-idle.sh
-# NetworkManager secret agent (sin esto: "failed to get secrets, no agents")
+# NetworkManager secret agent (without this: "failed to get secrets, no agents")
 exec nm-applet --indicator
+# Only when the Sway session starts; do not relaunch on reload or resume from sleep/hibernate.
+exec swaymsg 'workspace number 1; exec $term'
 
 ###############
 ### APPEARANCE
 ###############
-# Gaps equivalentes a general { gaps_in = 5; gaps_out = 5 }
+# Gaps equivalent to general { gaps_in = 5; gaps_out = 5 }
 gaps inner 3
 gaps outer 3
 
-# Border 2px, sin titlebars (como hyprland)
+# 2px border, without titlebars (like Hyprland)
 default_border pixel 2
 default_floating_border pixel 2
 titlebar_padding 1
 font pango:CaskaydiaCove Nerd Font 10
 
-# Colores equivalentes:
+# Equivalent colors:
 #   active_border   = #b7bdf8
 #   inactive_border = #595959
 #                       border    bground   text      indicator child_border
@@ -75,7 +77,7 @@ client.urgent           #eb6f92   #eb6f92   #1e2030   #eb6f92   #eb6f92
 ### KEYBINDINGS  ###
 ####################
 
-# Arrastrar/redimensionar floats con el modificador
+# Drag/resize floating windows with the modifier
 floating_modifier $mod normal
 
 bindsym $mod+Return exec $term
@@ -87,16 +89,16 @@ bindsym $mod+e exec $fileManager
 bindsym $mod+v floating toggle
 bindsym $mod+space exec $menu
 bindsym $mod+j split toggle
-# Lock: loginctl dispara el handler 'lock' de swayidle (kscreenlocker_greet).
+# Lock: loginctl triggers the swayidle 'lock' handler (kscreenlocker_greet).
 bindsym $mod+l exec loginctl lock-session
 
-# Foco con flechas
+# Focus with arrow keys
 bindsym $mod+Left focus left
 bindsym $mod+Right focus right
 bindsym $mod+Up focus up
 bindsym $mod+Down focus down
 
-# Mover ventana con flechas
+# Move windows with arrow keys
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Right move right
 bindsym $mod+Shift+Up move up
@@ -125,11 +127,11 @@ bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
-# Scratchpad (equivalente al special workspace "magic")
+# Scratchpad (equivalent to the "magic" special workspace)
 bindsym $mod+s scratchpad show
 bindsym $mod+Shift+s move scratchpad
 
-# Scroll para cambiar de workspace
+# Scroll to switch workspace
 bindsym $mod+button4 workspace prev_on_output
 bindsym $mod+button5 workspace next_on_output
 
@@ -140,7 +142,7 @@ bindsym $mod+Shift+i exec ~/.config/sway/scripts/toggle-idle.sh
 bindsym Print exec ~/.config/sway/scripts/screenshot.sh area
 bindsym Shift+Print exec ~/.config/sway/scripts/screenshot.sh screen
 
-# Volumen y brillo (--locked = responde también con pantalla bloqueada)
+# Volume and brightness (--locked = also responds when the screen is locked)
 bindsym --locked XF86AudioRaiseVolume exec ~/.config/waybar/scripts/volume.sh up
 bindsym --locked XF86AudioLowerVolume exec ~/.config/waybar/scripts/volume.sh down
 bindsym --locked XF86AudioMute exec ~/.config/waybar/scripts/volume.sh mute
@@ -148,7 +150,7 @@ bindsym --locked XF86AudioMicMute exec ~/.config/waybar/scripts/volume.sh mute-m
 bindsym --locked XF86MonBrightnessUp exec ~/.config/waybar/scripts/brightness.sh up
 bindsym --locked XF86MonBrightnessDown exec ~/.config/waybar/scripts/brightness.sh down
 
-# Playerctl con swayosd
+# Playerctl with swayosd
 bindsym --locked XF86AudioNext exec swayosd-client --playerctl next
 bindsym --locked XF86AudioPause exec swayosd-client --playerctl play-pause
 bindsym --locked XF86AudioPlay exec swayosd-client --playerctl play-pause
@@ -167,11 +169,11 @@ bindgesture swipe:3:left  workspace next_on_output
 ################
 ### WINDOW RULES
 ################
-# Hyprland-run equivalente: ventana flotante anclada abajo-izquierda
+# Hyprland-run equivalent: floating window anchored to the bottom-left
 for_window [app_id="hyprland-run"] floating enable, resize set 600 80, move position 20 px 100 px from bottom
 
 for_window [class="Bitwarden"] floating enable
 for_window [class="FortiClient"] floating enable
 
-# Incluir overrides locales opcionales
+# Include optional local overrides
 include /etc/sway/config.d/*
