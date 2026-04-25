@@ -48,7 +48,7 @@ exec gnome-keyring-daemon --start --components=secrets
 # y otros servicios del usuario vean la sesión Wayland.
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
 # Barra, notificaciones y OSD
-exec_always pkill waybar; waybar -c ~/.config/waybar/config-sway -s ~/.config/waybar/style-sway.css &
+exec_always sh -c 'pkill -x waybar || true; exec waybar -c ~/.config/waybar/config-sway -s ~/.config/waybar/style-sway.css'
 exec dunst
 exec swayosd-server
 # Wallpaper (equivalente a hyprpaper)

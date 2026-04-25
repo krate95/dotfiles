@@ -41,8 +41,8 @@ seat seat0 xcursor_theme default 24
 ### AUTOSTART ###
 #################
 exec kwalletd5
-exec_always --no-startup-id pkill kanshi; kanshi
-exec_always --no-startup-id pkill waybar; waybar -c ~/.config/waybar/config-sway -s ~/.config/waybar/style-sway.css &
+exec_always --no-startup-id sh -c 'pkill -x kanshi || true; exec kanshi'
+exec_always --no-startup-id sh -c 'pkill -x waybar || true; exec waybar -c ~/.config/waybar/config-sway -s ~/.config/waybar/style-sway.css'
 exec dunst
 exec swayosd-server
 exec ~/.config/sway/scripts/sway-idle.sh
