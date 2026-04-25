@@ -2,18 +2,21 @@
 set -euo pipefail
 
 # Fedora Atomic Sway dotfiles bootstrap
-# Requires: Fedora Atomic (Sway spin or any Atomic variant) with rpm-ostree.
+# Requires: Fedora Atomic (Sway spin o variante equivalente) con rpm-ostree.
 # Re-run after reboot if packages are staged.
+#
+# Overlays de rpm-ostree se mantienen al mínimo: la imagen base de Sway
+# Atomic ya trae sway/swaybg/swaylock/swayidle, waybar, wofi, mako, grim,
+# slurp, wl-clipboard, NetworkManager, toolbox, flatpak, git, curl, unzip,
+# etc. Solo se layeriza lo que falta o lo que reemplaza un default de base
+# (kitty en vez de foot, dunst en vez de mako).
 #
 # Each step is opt-in (interactive y/N prompt). Installs:
 #   - rpm-ostree upgrade            — stage system update (reboot may be required)
-#   Host layer (rpm-ostree):
-#     git, stow, toolbox, kitty, curl, unzip, jq, ripgrep, zsh, fprintd
-#   Sway stack (rpm-ostree):
-#     sway, swaybg, swaylock, swayidle, waybar, dunst, wofi,
-#     playerctl, brightnessctl, grim, slurp, wl-clipboard, thunar,
-#     NetworkManager-tui, network-manager-applet,
-#     gnome-keyring, polkit-gnome
+#   Host layer (rpm-ostree overlay):
+#     stow, kitty, zsh, fprintd, ripgrep, jq
+#   Sway stack (rpm-ostree overlay):
+#     dunst, thunar, polkit-gnome, network-manager-applet
 #     (swayosd vía COPR erikreider/SwayOSD — opcional)
 #   Fonts:
 #     Cascadia Code Nerd Font       — installed to ~/.local/share/fonts
@@ -101,15 +104,16 @@ stage_host_pkgs() {
 # Sway stack (rpm-ostree)
 # -------------------------
 install_sway_stack() {
+  # Overlays mínimos: sway/swaybg/swaylock/swayidle, waybar, wofi, grim,
+  # slurp, wl-clipboard, playerctl, brightnessctl, mako, gnome-keyring y
+  # NetworkManager ya vienen en la imagen base de Sway Atomic. Solo
+  # añadimos:
+  #   - dunst                    reemplaza mako (compartimos config con hypr)
+  #   - thunar                   file manager ($fileManager en sway/config)
+  #   - polkit-gnome             polkit agent para pedir contraseña con GUI
+  #   - network-manager-applet   tray/indicador NM (nm-applet --indicator)
   set +e
-  stage_host_pkgs \
-    sway swaybg swaylock swayidle \
-    waybar dunst wofi \
-    playerctl brightnessctl \
-    grim slurp wl-clipboard \
-    thunar \
-    NetworkManager-tui network-manager-applet \
-    gnome-keyring polkit-gnome
+  stage_host_pkgs dunst thunar polkit-gnome network-manager-applet
   local rc=$?
   set -e
 
@@ -325,10 +329,11 @@ main() {
     log "Upgrade staged (reboot may be required)."
   fi
 
-  # Host essentials (kitty INCLUDED here)
-  if confirm "Install host essentials (git, stow, toolbox, kitty, curl, unzip, jq, ripgrep)?"; then
+  # Host essentials: solo lo que no viene en base. git/curl/unzip/toolbox ya
+  # están en la imagen de Sway Atomic.
+  if confirm "Install host essentials (stow, kitty, zsh, fprintd, ripgrep, jq)?"; then
     set +e
-    stage_host_pkgs git stow toolbox kitty curl unzip jq ripgrep zsh fprintd
+    stage_host_pkgs stow kitty zsh fprintd ripgrep jq
     rc=$?
     set -e
     if [[ "$rc" == "10" ]]; then
@@ -337,7 +342,7 @@ main() {
     fi
   fi
 
-  if confirm "Install Sway stack (sway, swaybg, swaylock, swayidle, waybar, dunst, wofi, grim/slurp, thunar, NetworkManager, gnome-keyring, polkit-gnome)?"; then
+  if confirm "Install Sway stack overlay (dunst, thunar, polkit-gnome, network-manager-applet)?"; then
     install_sway_stack
   fi
 
