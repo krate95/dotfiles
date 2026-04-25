@@ -99,11 +99,11 @@ bindsym $mod+v floating toggle
 bindsym $mod+space exec $menu
 bindsym $mod+j split toggle
 # Manual lock: call swaylock directly so it does not depend on swayidle running.
-bindsym $mod+l exec swaylock -f
+bindsym $mod+l exec pidof swaylock || swaylock -f
 
 # Lock immediately when the laptop lid closes. Relying only on swayidle's
 # before-sleep hook misses cases where logind blanks the panel without suspend.
-bindswitch --locked lid:on exec swaylock -f
+bindswitch --locked lid:on exec pidof swaylock || swaylock -f
 
 # Foco con flechas
 bindsym $mod+Left focus left
