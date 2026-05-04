@@ -11,7 +11,7 @@ set -euo pipefail
 #   - Cascadia Code Nerd Font   — programming font
 #   - zsh + Oh My Zsh           — shell; plugins: zsh-autosuggestions, zsh-syntax-highlighting
 #   - Oh My Posh                — shell prompt theme engine
-#   - Neovim + ripgrep          — editor and fast search tool
+#   - Neovim + ripgrep          — editor, fast search tool, and Treesitter CLI
 #   [Kubuntu only]
 #   - Sway stack                — sway, swayidle, waybar, dunst, wofi, grim/slurp,
 #                                 playerctl, brightnessctl; coexists with Plasma as an
@@ -353,13 +353,15 @@ install_sddm_theme() {
 install_nvim() {
 	case "$OS" in
 		macos)
-			brew install neovim ripgrep || true
+			brew install neovim ripgrep tree-sitter-cli || true
 			;;
 		ubuntu)
 			sudo apt-get install -y neovim ripgrep || true
+			sudo apt-get install -y tree-sitter-cli || true
 			;;
 		arch)
 			sudo pacman -Sy --noconfirm neovim ripgrep || true
+			sudo pacman -Sy --noconfirm tree-sitter-cli || true
 			;;
 	esac
 }
@@ -571,4 +573,3 @@ main() {
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
 	main "$@"
 fi
-

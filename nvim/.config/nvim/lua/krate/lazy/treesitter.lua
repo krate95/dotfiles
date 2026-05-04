@@ -4,12 +4,7 @@ return {
     lazy = false,
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter").setup({
-        install_dir = vim.fn.stdpath("data") .. "/site",
-      })
-
-    -- Install parsers asynchronously. If they are already installed, it does nothing.
-      require("nvim-treesitter").install({
+      local parsers = {
         "lua", "vim", "vimdoc", "bash",
         "json", "yaml",
         "html", "css",
@@ -17,9 +12,17 @@ return {
         "markdown", "markdown_inline",
         "dockerfile", "gitignore",
         "regex", "query",
+      }
+
+      require("nvim-treesitter").setup({
+        install_dir = vim.fn.stdpath("data") .. "/site",
       })
 
-    -- Enable highlighting per filetype (Neovim provides the highlighting)
+      if vim.fn.executable("tree-sitter") == 1 then
+        require("nvim-treesitter").install(parsers)
+      end
+
+      -- Enable highlighting per filetype when the parser is available.
       vim.api.nvim_create_autocmd("FileType", {
         pattern = {
           "lua","vim","bash","json","yaml","html","css",
@@ -27,7 +30,7 @@ return {
           "markdown","dockerfile","gitignore",
         },
         callback = function()
-          vim.treesitter.start()
+          pcall(vim.treesitter.start)
         end,
       })
     end,
