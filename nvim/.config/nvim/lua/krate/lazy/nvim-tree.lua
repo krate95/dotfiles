@@ -1,97 +1,54 @@
 return {
-  {
-    "williamboman/mason.nvim",
-    config = function()
-      require("mason").setup()
-    end
+  "nvim-tree/nvim-tree.lua",
+  cmd = {
+    "NvimTreeToggle",
+    "NvimTreeOpen",
+    "NvimTreeFindFile",
   },
-  {
-    "williamboman/mason-lspconfig.nvim",
-    dependencies = { "williamboman/mason.nvim" },
-    config = function()
-      require("mason-lspconfig").setup({
-        ensure_installed = {
-          "yamlls",
-          "ts_ls",
-          "lua_ls",
-          "helm_ls",
-        }
-      })
-    end
+  keys = {
+    { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file explorer" },
+    { "<leader>E", "<cmd>NvimTreeFocus<cr>", desc = "Focus file explorer" },
+    { "<leader>w", "<cmd>wincmd p<cr>", desc = "Focus previous window" },
   },
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      vim.lsp.config('yamlls', {
-        settings = {
-          yaml = {
-            schemas = {
-              ["https://json.schemastore.org/chart"] = "Chart.yaml",
-              ["https://json.schemastore.org/kustomization"] = "kustomization.yaml",
-              ["https://json.schemastore.org/helmfile"] = "helmfile.yaml",
-              kubernetes = { "**/templates/*.yaml", "**/templates/*.yml" },
-            },
-            validate = true,
-            completion = true,
-            hover = true,
-          }
-        },
-        filetypes = { "yaml", "yml" },
-        on_attach = function(client, bufnr)
-          local path = vim.api.nvim_buf_get_name(bufnr)
-          if path:match("templates/") then
-            vim.lsp.buf_detach_client(bufnr, client.id)
-          end
+  dependencies = {
+    "nvim-tree/nvim-web-devicons",
+  },
+  init = function()
+    vim.api.nvim_create_autocmd("VimEnter", {
+      callback = function(data)
+        if vim.fn.isdirectory(data.file) == 1 then
+          vim.cmd.cd(data.file)
+          require("nvim-tree.api").tree.open()
         end
-      })
-
-      vim.lsp.config('helm_ls', {
-        settings = {
-          ['helm-ls'] = {
-            yamlls = {
-              enabled = true,
-            }
-          }
-        }
-      })
-
-      vim.lsp.config('ts_ls', {})
-      vim.lsp.config('lua_ls', {})
-
-      vim.lsp.enable({ 'yamlls', 'ts_ls', 'lua_ls', 'helm_ls' })
-    end
-  },
-  {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "L3MON4D3/LuaSnip",
-      "saadparwaiz1/cmp_luasnip",
+      end,
+    })
+  end,
+  opts = {
+    view = {
+      side = "left",
+      width = 32,
     },
-    config = function()
-      local cmp = require("cmp")
-      cmp.setup({
-        snippet = {
-          expand = function(args)
-            require("luasnip").lsp_expand(args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert({
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<CR>'] = cmp.mapping.confirm({ select = true }),
-          ['<Tab>'] = cmp.mapping.select_next_item(),
-          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
-          ['<C-e>'] = cmp.mapping.abort(),
-        }),
-        sources = {
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-          { name = 'buffer' },
-          { name = 'path' },
-        },
-      })
-    end
-  }
+    renderer = {
+      group_empty = true,
+      icons = {
+        git_placement = "after",
+      },
+    },
+    filters = {
+      dotfiles = false,
+    },
+    git = {
+      ignore = false,
+    },
+    update_focused_file = {
+      enable = true,
+      update_root = false,
+    },
+    actions = {
+      open_file = {
+        quit_on_open = false,
+        resize_window = true,
+      },
+    },
+  },
 }

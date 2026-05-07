@@ -21,12 +21,75 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+    },
     config = function()
+      vim.filetype.add({
+        pattern = {
+          [".*/templates/.*%.ya?ml"] = "helm",
+          [".*/templates/.*%.tpl"] = "helm",
+          [".*/values.*%.ya?ml"] = "yaml.helm-values",
+        },
+      })
+
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
       vim.lsp.config('yamlls', {
+        capabilities = capabilities,
         settings = {
+          redhat = {
+            telemetry = {
+              enabled = false,
+            },
+          },
           yaml = {
+            schemaStore = {
+              enable = true,
+            },
             schemas = {
-              kubernetes = { "*.yaml", "*.yml" },
+              kubernetes = {
+                "*.k8s.yaml",
+                "*.k8s.yml",
+                "k8s/**/*.yaml",
+                "k8s/**/*.yml",
+                "kubernetes/**/*.yaml",
+                "kubernetes/**/*.yml",
+                "manifests/**/*.yaml",
+                "manifests/**/*.yml",
+                "deploy/**/*.yaml",
+                "deploy/**/*.yml",
+                "deployment.yaml",
+                "deployment.yml",
+                "*deployment*.yaml",
+                "*deployment*.yml",
+                "service.yaml",
+                "service.yml",
+                "*service*.yaml",
+                "*service*.yml",
+                "ingress.yaml",
+                "ingress.yml",
+                "*ingress*.yaml",
+                "*ingress*.yml",
+                "configmap.yaml",
+                "configmap.yml",
+                "*configmap*.yaml",
+                "*configmap*.yml",
+                "secret.yaml",
+                "secret.yml",
+                "*secret*.yaml",
+                "*secret*.yml",
+                "*namespace*.yaml",
+                "*namespace*.yml",
+                "*cronjob*.yaml",
+                "*cronjob*.yml",
+                "*job*.yaml",
+                "*job*.yml",
+                "*pod*.yaml",
+                "*pod*.yml",
+                "*pvc*.yaml",
+                "*pvc*.yml",
+              },
               ["https://json.schemastore.org/kustomization"] = "kustomization.yaml",
               ["https://json.schemastore.org/chart"] = "Chart.yaml",
               ["https://json.schemastore.org/helmfile"] = "helmfile.yaml",
@@ -46,17 +109,30 @@ return {
       })
 
       vim.lsp.config('helm_ls', {
+        capabilities = capabilities,
+        filetypes = { "helm", "yaml.helm-values" },
         settings = {
           ['helm-ls'] = {
             yamlls = {
               enabled = true,
+              config = {
+                schemas = {
+                  kubernetes = "templates/**",
+                },
+                completion = true,
+                hover = true,
+              },
             }
           }
         }
       })
 
-      vim.lsp.config('ts_ls', {})
-      vim.lsp.config('lua_ls', {})
+      vim.lsp.config('ts_ls', {
+        capabilities = capabilities,
+      })
+      vim.lsp.config('lua_ls', {
+        capabilities = capabilities,
+      })
 
       vim.lsp.enable({ 'yamlls', 'ts_ls', 'lua_ls', 'helm_ls' })
     end

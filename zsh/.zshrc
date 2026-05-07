@@ -76,6 +76,7 @@ ZSH_THEME="robbyrussell"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+    azure
     battery
     copyfile
     copypath
@@ -142,7 +143,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   export XDG_DATA_DIRS="/var/lib/snapd/desktop:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
 fi
 
-eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/config.omp.json)"
+#eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/config.omp.json)"
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
@@ -161,3 +162,5 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+eval "$(starship init zsh)"
