@@ -11,7 +11,7 @@ profile laptop {
 
 # Portátil + ultrawide
 profile docked {
-    output DP-4  mode 3440x1440 position 0,0
+    output DP-6  mode 3440x1440 position 0,0
     output eDP-1 mode 1920x1080 scale 1.25 position 3440,0
 }
 
@@ -19,6 +19,6 @@ profile docked {
 # TODO: sustituir "PLACEHOLDER" por el nombre real del output
 #       (conectar el monitor y ejecutar: swaymsg -t get_outputs | grep '"name"')
 profile portable {
-    output eDP-1      mode 1920x1080 scale 1.25 position 0,0
-    output PLACEHOLDER mode 1920x1080 position 1536,0
+    output PLACEHOLDER mode 1920x1080 position 0,0
+    output eDP-1      mode 1920x1080 scale 1.25 position 1920,0
 }
